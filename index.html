@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f5f4f0"><meta name="description" content="A browser-based studio for preparing artwork on apparel mockups.">
-<title>PrintCanvas — Design Studio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>PrintCanvas · Dawn Sogni Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Grenze+Gotisch:wght@500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{--ink:#252722;--muted:#85877e;--line:#e8e7e1;--paper:#f5f4f0;--white:#fff;--lime:#d7f278;--green:#526833;--panel:#fbfaf7;--shadow:0 12px 40px #34352212}
@@ -13,9 +13,64 @@
 @media(max-width:760px){.topbar{padding:0 16px;height:58px}.privacy{display:none}.app{padding:18px 12px}.page-head{align-items:start}.page-head h1{font-size:21px}.layout{display:flex;flex-direction:column}.center-panel{order:0;width:100%}.left-panel{order:1;width:100%}.right-panel{order:2;width:100%;display:grid;grid-template-columns:1fr 1fr}.stage{height:65vh;min-height:440px;max-height:660px}.mockup{width:96%;height:90%}.mockup.hoodie{width:100%}.mockup.tote{width:75%}.step{font-size:9px;margin-top:4px}.brand{font-size:17px}}
 </style>
 <style>.text-btn{border:0;background:transparent;padding:3px 0;color:#8b6555;font-size:10px;font-weight:600}.text-btn:hover:not(:disabled){color:#a4432f;text-decoration:underline}.text-btn:disabled{opacity:.42;cursor:not-allowed}</style>
-<style>.design-layer-group{position:absolute;inset:0;pointer-events:none}.design-layer-group .artwork-layer{pointer-events:auto;display:grid;border:1px solid transparent;z-index:1}.design-layer-group .artwork-layer.selected{border:1px dashed #708149;z-index:2}.design-placeholder#placeholder{display:none}.design-placeholder{position:absolute;left:50%;top:42%;width:30%;height:16%;transform:translate(-50%,-50%);background:#ffffff45}.design-list{display:grid;gap:5px;margin-top:8px;max-height:150px;overflow:auto}.design-row{display:flex;align-items:center;gap:5px}.design-select{min-width:0;flex:1;display:flex;align-items:center;gap:7px;padding:5px;background:white;border:1px solid var(--line);border-radius:7px;text-align:left;font-size:10px}.design-row.active .design-select{border-color:#788750;background:#f6f7f0}.design-select img{width:28px;height:28px;object-fit:contain;background:#f2f1ed;border-radius:4px}.design-select span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.design-remove{width:26px;height:26px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:17px;line-height:1;color:#8a6055}.design-remove:hover{background:#fff3ef;border-color:#d8b6aa}.design-layer-group .artwork-layer img{pointer-events:none}#clearArtwork{font-size:10px;border:0;background:none;color:#777;text-decoration:underline}#clearArtwork:disabled{opacity:.45;cursor:default}</style></head>
+<style>.design-layer-group{position:absolute;inset:0;pointer-events:none}.design-layer-group .artwork-layer{pointer-events:auto;display:grid;border:1px solid transparent;z-index:1}.design-layer-group .artwork-layer.selected{border:1px dashed #708149;z-index:2}.design-placeholder#placeholder{display:none}.design-placeholder{position:absolute;left:50%;top:42%;width:30%;height:16%;transform:translate(-50%,-50%);background:#ffffff45}.design-list{display:grid;gap:5px;margin-top:8px;max-height:150px;overflow:auto}.design-row{display:flex;align-items:center;gap:5px}.design-select{min-width:0;flex:1;display:flex;align-items:center;gap:7px;padding:5px;background:white;border:1px solid var(--line);border-radius:7px;text-align:left;font-size:10px}.design-row.active .design-select{border-color:#788750;background:#f6f7f0}.design-select img{width:28px;height:28px;object-fit:contain;background:#f2f1ed;border-radius:4px}.design-select span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.design-remove{width:26px;height:26px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:17px;line-height:1;color:#8a6055}.design-remove:hover{background:#fff3ef;border-color:#d8b6aa}.design-layer-group .artwork-layer img{pointer-events:none}#clearArtwork{font-size:10px;border:0;background:none;color:#777;text-decoration:underline}#clearArtwork:disabled{opacity:.45;cursor:default}</style><style>
+:root{--ink:#f5f6f7;--muted:#aeb5bc;--line:#2d3238;--paper:#050607;--white:#101316;--lime:#c6cfd7;--green:#b9c3cd;--panel:#0a0c0f;--shadow:0 16px 48px #0009}
+body{background:var(--paper);color:var(--ink);font-family:"Chakra Petch",system-ui,sans-serif}
+button,input,select{font-family:"Chakra Petch",system-ui,sans-serif}
+.topbar{height:78px;padding:0 34px;background:#050607;border-bottom:1px solid #2d3238;position:relative}
+.dawn-brand{display:flex;align-items:center;gap:14px;letter-spacing:2px}.dawn-brand img{display:block;width:138px;height:46px;object-fit:contain}.brand-caption{border-left:1px solid #555d65;padding-left:14px;color:#aab4bd;font-size:9px;font-weight:600;letter-spacing:2.3px}
+.privacy{color:#b9c3cd;letter-spacing:.4px;text-transform:uppercase;font-size:10px}
+.btn{background:#f7f8f9;color:#050607;border:1px solid #f7f8f9;border-radius:999px;padding:10px 17px;font-weight:700;letter-spacing:.3px}
+.btn:hover{background:#c7d0d8;border-color:#c7d0d8;color:#050607}
+.btn.dark{background:#f7f8f9;color:#050607;border-color:#f7f8f9}.btn.dark:hover{background:#c7d0d8}
+.btn.lime{background:#b9c3cd;border-color:#b9c3cd;color:#060708}
+.app{max-width:1540px;padding:27px 30px 40px}
+.page-head h1{font-family:"Grenze Gotisch","Chakra Petch",serif;font-size:32px;font-weight:600;letter-spacing:.2px;font-style:italic}
+.page-head p{color:#adb5bd;font-size:13px}
+.eyebrow,.step{color:#9ca7b0;letter-spacing:1.8px}
+.panel{background:#0d1013;border:1px solid #272c31;box-shadow:0 14px 38px #0007;border-radius:12px}
+.panel-title{font-family:"Chakra Petch",sans-serif;color:#f2f4f6;letter-spacing:.3px}
+.section{border-color:#2a2f34}
+.small-note,.hint,.mini-label,.value,.export-note,.color-label{color:#9ca6ae}
+.dropzone{background:#090b0d;border-color:#4c555e;color:#f1f3f5}
+.dropzone:hover,.dropzone.drag{background:#171b20;border-color:#c0cad2}
+.upload-icon{background:#20262b;color:#d5dde3}
+.product-btn{background:#0b0e11;border-color:#333a40;color:#f0f2f4}
+.product-btn.active{border-color:#c3cdd5;background:#171b1f}
+.choice{background:#0b0e11;border-color:#343a40;color:#bbc2c8}
+.choice.active{border-color:#c4ced6;background:#20262b;color:#fff}
+.swatch{box-shadow:0 0 0 1px #747d85;border-color:#0d1013}
+.swatch.active{box-shadow:0 0 0 2px #dbe3e9}
+.control-label{color:#e6e9eb}
+.range{accent-color:#c7d0d8}
+.toolbtn{background:#111518;border-color:#353c42;color:#e9edef}
+.toolbtn.active{border-color:#ccd5dc;background:#252b30;color:#fff}
+.toolbtn:disabled{opacity:.4}
+.center-panel{background:#090b0d}
+.canvas-toolbar{background:#090b0d;border-color:#2a2f34}
+.mock-name{color:#eef1f3;letter-spacing:.35px}
+.stage{background:#050607 url("https://jayseth34.github.io/DawnSogniWeb/images/gothic-hall.webp") center 44%/cover no-repeat;isolation:isolate}
+.stage::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#020304b8,#040608d9 52%,#030405e8);z-index:-1}
+.stage-tip{background:#0b0e11e8;border-color:#343a40;color:#cbd2d8}
+.stage-zoom{color:#c2c9cf}
+.badge{background:#111518;border-color:#343a40;color:#cbd2d8;letter-spacing:1px}
+.badge i{background:#c1cbd3}
+.artwork-layer.selected{border-color:#e4ebef!important}
+.design-placeholder{color:#cad1d6;border-color:#7f8b94}
+.design-row .design-select{background:#0b0e11;border-color:#343a40;color:#e9ecef}
+.design-row.active .design-select{border-color:#c6d0d8;background:#1a1f23}
+.design-select img{background:#24292e}
+.design-remove{background:#14181b;border-color:#444b51;color:#e5a39d}
+.design-remove:hover{background:#33201e;border-color:#a85e55}
+.number{background:#090b0d;border-color:#343a40;color:#f4f6f8}
+.number:focus{border-color:#c4ced6}
+.rotate-reset,#clearArtwork{color:#c2c9cf}
+.icon-btn{color:#c2c9cf}.icon-btn:hover{background:#1a1e22;border-color:#373d43;color:white}
+.toast{background:#edf0f2;color:#070809}
+@media(max-width:760px){.topbar{padding:0 15px}.dawn-brand{gap:8px}.dawn-brand img{width:110px;height:38px}.brand-caption{font-size:8px;padding-left:9px;letter-spacing:1.5px}.page-head h1{font-size:27px}}
+</style></head>
 <body>
-<header class="topbar"><div class="brand"><div class="brand-mark">✳</div><span>print<em>canvas</em></span></div><div class="top-right"><div class="privacy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Your artwork stays on this device</div><button class="btn" id="resetBtn">↺ &nbsp;Reset design</button></div></header>
+<header class="topbar"><div class="brand dawn-brand"><img src="https://jayseth34.github.io/DawnSogniWeb/images/logo-full.webp" alt="Dawn Sogni"><span class="brand-caption">PRINT STUDIO</span></div><div class="top-right"><div class="privacy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Your artwork stays on this device</div><button class="btn" id="resetBtn">↺ &nbsp;Reset design</button></div></header>
 <main class="app"><div class="page-head"><div><div class="eyebrow">YOUR CREATIVE WORKSPACE</div><h1>Design your next favorite.</h1><p>Make it yours. See it come to life.</p></div><div class="step">STUDIO &nbsp; / &nbsp; <b>01</b></div></div>
 <div class="layout">
 <aside class="panel left-panel">
@@ -31,6 +86,8 @@
 </div></main><div class="toast" id="toast"></div>
 <script src="app.js"></script>
 </body></html>
+
+
 
 
 

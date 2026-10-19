@@ -1,6 +1,6 @@
 # PrintCanvas
 
-A static, browser-based design studio for preparing artwork on T-shirt mockups. Uploaded artwork stays in your browser; the site does not upload images to a server.
+A static, browser-based design studio for preparing artwork on T-shirt mockups, styled for the Dawn Sogni brand. Uploaded artwork stays in your browser; the site does not upload images to a server.
 
 ## Run locally
 
