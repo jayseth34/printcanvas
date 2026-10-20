@@ -20,3 +20,9 @@ Open `index.html` in a modern browser. No build step or account is required. Goo
 PDF export loads jsPDF from a CDN and requires an internet connection. Background cleanup and image adjustments run in the browser; they are not AI cutout or generative upscaling.
 
 
+
+## Dawn Sogni edition
+- **Look:** dark Dawn Sogni theme (`theme.css`), with the logo and a link back to the shop.
+- **Crop:** select an image layer, then press **Crop image**. You can crop freely or lock to 1:1, 4:5, 3:4, 16:9 or the original ratio. Drag the box or its handles, or nudge it with the arrow keys.
+- **Fonts:** 85 free fonts are stored in `fonts/` and listed in `fonts.js`, grouped as Gothic, Streetwear, Futuristic, Script, Serif and Sans. They're searchable and each one loads only when it's used. You can also upload your own font (.ttf, .otf or .woff). All the bundled fonts are under the SIL Open Font License or Apache 2.0, from Google Fonts via Fontsource.
+- **Order:** "Order this design on WhatsApp" saves a preview, then opens a chat with Dawn Sogni.

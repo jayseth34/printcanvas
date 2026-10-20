@@ -1,99 +1,1611 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f5f4f0"><meta name="description" content="A browser-based studio for preparing artwork on apparel mockups.">
-<title>PrintCanvas · Dawn Sogni Studio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&amp;family=Cinzel:wght@400;500;600;700&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&amp;family=Grenze+Gotisch:wght@500;600;700&amp;family=Oswald:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;1,500;1,600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
-:root{--ink:#252722;--muted:#85877e;--line:#e8e7e1;--paper:#f5f4f0;--white:#fff;--lime:#d7f278;--green:#526833;--panel:#fbfaf7;--shadow:0 12px 40px #34352212}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px 'DM Sans',sans-serif}button,input,select{font:inherit}button{color:inherit;cursor:pointer}.topbar{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;background:#faf9f6}.brand{display:flex;align-items:center;gap:11px;font:800 19px Manrope,sans-serif;letter-spacing:-.8px}.brand-mark{width:28px;height:28px;border-radius:9px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-size:16px}.brand span em{font-style:normal;color:#9aa563}.top-right{display:flex;align-items:center;gap:17px}.privacy{font-size:12px;color:#777a70;display:flex;align-items:center;gap:6px}.privacy svg{color:#637c3e}.btn{border:1px solid var(--line);background:white;border-radius:9px;padding:10px 14px;font-weight:600;font-size:12px;transition:.15s}.btn:hover{border-color:#a9ad98;transform:translateY(-1px)}.btn.dark{background:var(--ink);border-color:var(--ink);color:white}.btn.dark:hover{background:#41433b}.btn.lime{background:var(--lime);border-color:var(--lime)}.app{max-width:1500px;margin:auto;padding:25px 30px 36px}.page-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:19px}.eyebrow{font:500 10px 'DM Mono',monospace;letter-spacing:1.2px;color:#797b70;text-transform:uppercase}.page-head h1{font:700 24px Manrope;margin:6px 0 0;letter-spacing:-.8px}.page-head p{color:var(--muted);margin:4px 0 0;font-size:12px}.step{font:11px 'DM Mono',monospace;color:#73766e}.layout{display:grid;grid-template-columns:280px minmax(430px,1fr) 286px;gap:17px;align-items:start}.panel{background:var(--white);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:0 2px 10px #33320b05}.panel-title{font:700 13px Manrope;letter-spacing:-.2px}.left-panel,.right-panel{padding:18px}.section{padding:0 0 18px;margin:0 0 17px;border-bottom:1px solid var(--line)}.section:last-child{border-bottom:0;padding-bottom:0;margin-bottom:0}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.small-note{font-size:10px;color:#9a9b92}.dropzone{border:1px dashed #d3d4ca;background:#fafaf7;border-radius:10px;padding:16px 12px;text-align:center;cursor:pointer;transition:.18s}.dropzone:hover,.dropzone.drag{background:#f4f7e9;border-color:#9ba96c}.upload-icon{width:30px;height:30px;border-radius:9px;background:#eff1e7;margin:0 auto 8px;display:grid;place-items:center;color:#65744b}.dropzone strong{font-size:11px;display:block}.dropzone span{display:block;color:#96988e;font-size:10px;margin-top:4px}.file-meta{font-size:10px;color:var(--muted);margin-top:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.product-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 5px 7px;text-align:center;min-width:0}.product-btn.active{border:1.5px solid #69784b;background:#f7f8f1}.product-btn svg{display:block;margin:auto auto 5px;width:43px;height:44px}.product-btn span{font-size:10px;font-weight:600;display:block;line-height:1.2}.product-btn small{font-size:9px;color:#96988e}.shirt-choice{display:flex;gap:6px;margin-top:9px}.choice{flex:1;border:1px solid var(--line);border-radius:7px;padding:7px 6px;background:#fff;text-align:center;font-size:10px;color:#74766e}.choice.active{border-color:#8b986c;background:#f4f6ed;color:#404738;font-weight:700}.swatches{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.swatch{width:23px;height:23px;border-radius:50%;border:2px solid white;box-shadow:0 0 0 1px #deded7;cursor:pointer}.swatch.active{box-shadow:0 0 0 2px #708149}.control{margin-top:13px}.control:first-of-type{margin-top:0}.control-label{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:600;margin-bottom:7px}.value{font:10px 'DM Mono',monospace;color:#7f8179}.range{width:100%;height:4px;accent-color:#7a8c50;cursor:pointer}.hint{font-size:9px;color:#9b9d94;line-height:1.5;margin-top:7px}.toolrow{display:flex;gap:6px}.toolbtn{flex:1;border:1px solid var(--line);background:#fff;border-radius:7px;padding:8px 4px;font-size:10px;font-weight:600}.toolbtn.active{border-color:#a2ad83;background:#f5f7ed}.toolbtn:disabled{opacity:.45;cursor:not-allowed}.center-panel{min-width:0}.canvas-toolbar{height:46px;border-bottom:1px solid var(--line);padding:0 13px;display:flex;align-items:center;justify-content:space-between}.mock-name{font-size:11px;font-weight:700}.view-controls{display:flex;gap:5px}.icon-btn{width:28px;height:28px;border:1px solid transparent;background:transparent;border-radius:7px;color:#77796f;display:grid;place-items:center}.icon-btn:hover{background:#f3f3ef;border-color:var(--line)}.stage{position:relative;min-height:600px;height:calc(100vh - 235px);max-height:790px;overflow:hidden;background-color:#f2f1ed;background-image:radial-gradient(#dbd9d2 0.7px,transparent .7px);background-size:18px 18px;display:flex;align-items:center;justify-content:center}.mockup{width:min(83%,570px);height:94%;max-height:660px;position:relative;display:grid;place-items:center;filter:drop-shadow(0 24px 26px #28291c16);transition:width .25s}.mockup.hoodie{width:min(89%,625px)}.mockup.tote{width:min(71%,470px)}.garment{width:100%;height:100%;overflow:visible}.artwork-layer{position:absolute;left:50%;top:37%;width:28%;height:29%;display:grid;place-items:center;transform:translate(-50%,-50%);cursor:grab;touch-action:none;user-select:none;transform-origin:center}.mockup.hoodie .artwork-layer{top:38%;width:25%;height:24%}.mockup.tote .artwork-layer{top:48%;width:38%;height:38%}.artwork-layer:active{cursor:grabbing}.artwork-layer img{width:100%;height:100%;object-fit:contain;filter:var(--art-filter,none);pointer-events:none;user-select:none}.design-placeholder{width:100%;height:100%;border:1px dashed #939a7a55;display:grid;place-items:center;color:#757a67;font:10px 'DM Mono',monospace;letter-spacing:.7px;text-align:center;pointer-events:none}.stage-tip{position:absolute;bottom:13px;left:50%;transform:translateX(-50%);background:#ffffffc9;border:1px solid #e6e5de;border-radius:20px;padding:7px 12px;font-size:9px;color:#76786e;white-space:nowrap}.stage-zoom{position:absolute;bottom:13px;right:13px;font:10px 'DM Mono',monospace;color:#85877e}.badge{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:5px 8px;font-size:9px;color:#71746a}.badge i{width:5px;height:5px;background:#9bb96a;border-radius:50%}.right-panel .section{padding-bottom:18px;margin-bottom:17px}.color-input{width:34px;height:26px;border:0;background:transparent;padding:0;cursor:pointer}.color-line{display:flex;align-items:center;gap:8px}.color-label{font-size:10px;color:#85877e}.select{width:100%;padding:9px;border:1px solid var(--line);border-radius:7px;background:#fff;font-size:11px;margin-top:9px}.export-btn{width:100%;margin-top:8px}.export-btn:first-of-type{margin-top:0}.export-note{font-size:9px;color:#92948a;text-align:center;line-height:1.5;margin-top:10px}.transform-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.number-wrap{position:relative}.number-wrap span{position:absolute;right:9px;top:50%;transform:translateY(-50%);font:9px 'DM Mono';color:#92948a}.number{width:100%;border:1px solid var(--line);border-radius:7px;padding:8px;font:11px 'DM Mono';outline:none}.number:focus{border-color:#8e9b6c}.mini-label{font-size:9px;color:#8c8e85;margin-bottom:5px}.rotate-wrap{display:flex;gap:7px;align-items:center}.rotate-wrap input{flex:1}.rotate-reset{font-size:9px;border:0;background:none;color:#787b71;text-decoration:underline}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;background:#2b2d26;color:white;padding:11px 16px;border-radius:9px;font-size:12px;transition:.22s;z-index:5;pointer-events:none}.toast.show{transform:translate(-50%,0);opacity:1}.file-input{display:none}
-@media(max-width:1120px){.layout{grid-template-columns:245px minmax(360px,1fr)}.right-panel{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.right-panel .section{padding:0;margin:0;border:0}.stage{height:650px}}
-@media(max-width:760px){.topbar{padding:0 16px;height:58px}.privacy{display:none}.app{padding:18px 12px}.page-head{align-items:start}.page-head h1{font-size:21px}.layout{display:flex;flex-direction:column}.center-panel{order:0;width:100%}.left-panel{order:1;width:100%}.right-panel{order:2;width:100%;display:grid;grid-template-columns:1fr 1fr}.stage{height:65vh;min-height:440px;max-height:660px}.mockup{width:96%;height:90%}.mockup.hoodie{width:100%}.mockup.tote{width:75%}.step{font-size:9px;margin-top:4px}.brand{font-size:17px}}
-</style>
-<style>.text-btn{border:0;background:transparent;padding:3px 0;color:#8b6555;font-size:10px;font-weight:600}.text-btn:hover:not(:disabled){color:#a4432f;text-decoration:underline}.text-btn:disabled{opacity:.42;cursor:not-allowed}</style>
-<style>.design-layer-group{position:absolute;inset:0;pointer-events:none}.design-layer-group .artwork-layer{pointer-events:auto;display:grid;border:1px solid transparent;z-index:1}.design-layer-group .artwork-layer.selected{border:1px dashed #708149;z-index:2}.design-placeholder#placeholder{display:none}.design-placeholder{position:absolute;left:50%;top:42%;width:30%;height:16%;transform:translate(-50%,-50%);background:#ffffff45}.design-list{display:grid;gap:5px;margin-top:8px;max-height:150px;overflow:auto}.design-row{display:flex;align-items:center;gap:5px}.design-select{min-width:0;flex:1;display:flex;align-items:center;gap:7px;padding:5px;background:white;border:1px solid var(--line);border-radius:7px;text-align:left;font-size:10px}.design-row.active .design-select{border-color:#788750;background:#f6f7f0}.design-select img{width:28px;height:28px;object-fit:contain;background:#f2f1ed;border-radius:4px}.design-select span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.design-remove{width:26px;height:26px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:17px;line-height:1;color:#8a6055}.design-remove:hover{background:#fff3ef;border-color:#d8b6aa}.design-layer-group .artwork-layer img{pointer-events:none}#clearArtwork{font-size:10px;border:0;background:none;color:#777;text-decoration:underline}#clearArtwork:disabled{opacity:.45;cursor:default}</style><style>
-:root{--ink:#f5f6f7;--muted:#aeb5bc;--line:#2d3238;--paper:#050607;--white:#101316;--lime:#c6cfd7;--green:#b9c3cd;--panel:#0a0c0f;--shadow:0 16px 48px #0009}
-body{background:var(--paper);color:var(--ink);font-family:"Chakra Petch",system-ui,sans-serif}
-button,input,select{font-family:"Chakra Petch",system-ui,sans-serif}
-.topbar{height:78px;padding:0 34px;background:#050607;border-bottom:1px solid #2d3238;position:relative}
-.dawn-brand{display:flex;align-items:center;gap:14px;letter-spacing:2px}.dawn-brand img{display:block;width:138px;height:46px;object-fit:contain}.brand-caption{border-left:1px solid #555d65;padding-left:14px;color:#aab4bd;font-size:9px;font-weight:600;letter-spacing:2.3px}
-.privacy{color:#b9c3cd;letter-spacing:.4px;text-transform:uppercase;font-size:10px}
-.btn{background:#f7f8f9;color:#050607;border:1px solid #f7f8f9;border-radius:999px;padding:10px 17px;font-weight:700;letter-spacing:.3px}
-.btn:hover{background:#c7d0d8;border-color:#c7d0d8;color:#050607}
-.btn.dark{background:#f7f8f9;color:#050607;border-color:#f7f8f9}.btn.dark:hover{background:#c7d0d8}
-.btn.lime{background:#b9c3cd;border-color:#b9c3cd;color:#060708}
-.app{max-width:1540px;padding:27px 30px 40px}
-.page-head h1{font-family:"Grenze Gotisch","Chakra Petch",serif;font-size:32px;font-weight:600;letter-spacing:.2px;font-style:italic}
-.page-head p{color:#adb5bd;font-size:13px}
-.eyebrow,.step{color:#9ca7b0;letter-spacing:1.8px}
-.panel{background:#0d1013;border:1px solid #272c31;box-shadow:0 14px 38px #0007;border-radius:12px}
-.panel-title{font-family:"Chakra Petch",sans-serif;color:#f2f4f6;letter-spacing:.3px}
-.section{border-color:#2a2f34}
-.small-note,.hint,.mini-label,.value,.export-note,.color-label{color:#9ca6ae}
-.dropzone{background:#090b0d;border-color:#4c555e;color:#f1f3f5}
-.dropzone:hover,.dropzone.drag{background:#171b20;border-color:#c0cad2}
-.upload-icon{background:#20262b;color:#d5dde3}
-.product-btn{background:#0b0e11;border-color:#333a40;color:#f0f2f4}
-.product-btn.active{border-color:#c3cdd5;background:#171b1f}
-.choice{background:#0b0e11;border-color:#343a40;color:#bbc2c8}
-.choice.active{border-color:#c4ced6;background:#20262b;color:#fff}
-.swatch{box-shadow:0 0 0 1px #747d85;border-color:#0d1013}
-.swatch.active{box-shadow:0 0 0 2px #dbe3e9}
-.control-label{color:#e6e9eb}
-.range{accent-color:#c7d0d8}
-.toolbtn{background:#111518;border-color:#353c42;color:#e9edef}
-.toolbtn.active{border-color:#ccd5dc;background:#252b30;color:#fff}
-.toolbtn:disabled{opacity:.4}
-.center-panel{background:#090b0d}
-.canvas-toolbar{background:#090b0d;border-color:#2a2f34}
-.mock-name{color:#eef1f3;letter-spacing:.35px}
-.stage{background:#050607 url("https://jayseth34.github.io/DawnSogniWeb/images/gothic-hall.webp") center 44%/cover no-repeat;isolation:isolate}
-.stage::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#020304b8,#040608d9 52%,#030405e8);z-index:-1}
-.stage-tip{background:#0b0e11e8;border-color:#343a40;color:#cbd2d8}
-.stage-zoom{color:#c2c9cf}
-.badge{background:#111518;border-color:#343a40;color:#cbd2d8;letter-spacing:1px}
-.badge i{background:#c1cbd3}
-.artwork-layer.selected{border-color:#e4ebef!important}
-.design-placeholder{color:#cad1d6;border-color:#7f8b94}
-.design-row .design-select{background:#0b0e11;border-color:#343a40;color:#e9ecef}
-.design-row.active .design-select{border-color:#c6d0d8;background:#1a1f23}
-.design-select img{background:#24292e}
-.design-remove{background:#14181b;border-color:#444b51;color:#e5a39d}
-.design-remove:hover{background:#33201e;border-color:#a85e55}
-.number{background:#090b0d;border-color:#343a40;color:#f4f6f8}
-.number:focus{border-color:#c4ced6}
-.rotate-reset,#clearArtwork{color:#c2c9cf}
-.icon-btn{color:#c2c9cf}.icon-btn:hover{background:#1a1e22;border-color:#373d43;color:white}
-.toast{background:#edf0f2;color:#070809}
-@media(max-width:760px){.topbar{padding:0 15px}.dawn-brand{gap:8px}.dawn-brand img{width:110px;height:38px}.brand-caption{font-size:8px;padding-left:9px;letter-spacing:1.5px}.page-head h1{font-size:27px}}
-</style><style>.select{background:#090b0d;border-color:#343a40;color:#f4f6f8}.select option{background:#090b0d;color:#f4f6f8}.text-input{width:100%;resize:vertical;min-height:58px;padding:9px 10px;background:#090b0d;border:1px solid #343a40;border-radius:8px;color:#f4f6f8;font:12px "Chakra Petch",sans-serif;outline:none}.text-input:focus,.select:focus{border-color:#c4ced6}.text-style-row{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:center;margin-top:12px}.color-picker-label,.text-size-control{font-size:10px;color:#bfc7cd}.color-picker-label{display:flex;align-items:center;gap:7px}.color-picker-label input{width:28px;height:25px;padding:0;border:1px solid #444b51;border-radius:5px;background:transparent}.text-size-control{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:7px}.text-size-control span{font:10px "DM Mono",monospace;color:#aeb5bc;white-space:nowrap}.font-preview{margin-top:12px;padding:11px 8px;background:#07090b;border:1px solid #272c31;border-radius:8px;text-align:center;color:#fff;min-height:40px;white-space:pre-wrap;overflow-wrap:anywhere}.add-text-btn{width:100%;margin-top:10px}.artwork-layer.text-layer{height:auto!important;min-height:1em;display:grid;place-items:center;overflow:visible}.artwork-text{display:block;width:100%;text-align:center;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.1;user-select:none;pointer-events:none;text-shadow:0 1px 6px #0005}.layer-type{width:28px;height:28px;display:grid;place-items:center;flex:none;border-radius:4px;background:#24292e;color:#eef2f5;font:700 11px "Chakra Petch",sans-serif}.artwork-layer.selected.text-layer{outline:1px dashed #e4ebef;outline-offset:3px}.artwork-layer.selected.text-layer img{display:none}</style></head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#f5f4f0">
+    <meta name="description" content="A browser-based studio for preparing artwork on apparel mockups.">
+    <title>PrintCanvas · Dawn Sogni Studio</title>
+    <link rel="icon" href="assets/logo-mark.webp" type="image/webp">
+    <link rel="preload" href="fonts/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/grenze-gotisch-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --ink: #252722;
+            --muted: #85877e;
+            --line: #e8e7e1;
+            --paper: #f5f4f0;
+            --white: #fff;
+            --lime: #d7f278;
+            --green: #526833;
+            --panel: #fbfaf7;
+            --shadow: 0 12px 40px #34352212
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font: 14px 'DM Sans', sans-serif
+        }
+
+        button,
+        input,
+        select {
+            font: inherit
+        }
+
+        button {
+            color: inherit;
+            cursor: pointer
+        }
+
+        .topbar {
+            height: 68px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 34px;
+            background: #faf9f6
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font: 800 19px Manrope, sans-serif;
+            letter-spacing: -.8px
+        }
+
+        .brand-mark {
+            width: 28px;
+            height: 28px;
+            border-radius: 9px;
+            background: var(--ink);
+            color: var(--lime);
+            display: grid;
+            place-items: center;
+            font-size: 16px
+        }
+
+        .brand span em {
+            font-style: normal;
+            color: #9aa563
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 17px
+        }
+
+        .privacy {
+            font-size: 12px;
+            color: #777a70;
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .privacy svg {
+            color: #637c3e
+        }
+
+        .btn {
+            border: 1px solid var(--line);
+            background: white;
+            border-radius: 9px;
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 12px;
+            transition: .15s
+        }
+
+        .btn:hover {
+            border-color: #a9ad98;
+            transform: translateY(-1px)
+        }
+
+        .btn.dark {
+            background: var(--ink);
+            border-color: var(--ink);
+            color: white
+        }
+
+        .btn.dark:hover {
+            background: #41433b
+        }
+
+        .btn.lime {
+            background: var(--lime);
+            border-color: var(--lime)
+        }
+
+        .app {
+            max-width: 1500px;
+            margin: auto;
+            padding: 25px 30px 36px
+        }
+
+        .page-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 19px
+        }
+
+        .eyebrow {
+            font: 500 10px 'DM Mono', monospace;
+            letter-spacing: 1.2px;
+            color: #797b70;
+            text-transform: uppercase
+        }
+
+        .page-head h1 {
+            font: 700 24px Manrope;
+            margin: 6px 0 0;
+            letter-spacing: -.8px
+        }
+
+        .page-head p {
+            color: var(--muted);
+            margin: 4px 0 0;
+            font-size: 12px
+        }
+
+        .step {
+            font: 11px 'DM Mono', monospace;
+            color: #73766e
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 280px minmax(430px, 1fr) 286px;
+            gap: 17px;
+            align-items: start
+        }
+
+        .panel {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px #33320b05
+        }
+
+        .panel-title {
+            font: 700 13px Manrope;
+            letter-spacing: -.2px
+        }
+
+        .left-panel,
+        .right-panel {
+            padding: 18px
+        }
+
+        .section {
+            padding: 0 0 18px;
+            margin: 0 0 17px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .section:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+            margin-bottom: 0
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 13px
+        }
+
+        .small-note {
+            font-size: 10px;
+            color: #9a9b92
+        }
+
+        .dropzone {
+            border: 1px dashed #d3d4ca;
+            background: #fafaf7;
+            border-radius: 10px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: .18s
+        }
+
+        .dropzone:hover,
+        .dropzone.drag {
+            background: #f4f7e9;
+            border-color: #9ba96c
+        }
+
+        .upload-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: #eff1e7;
+            margin: 0 auto 8px;
+            display: grid;
+            place-items: center;
+            color: #65744b
+        }
+
+        .dropzone strong {
+            font-size: 11px;
+            display: block
+        }
+
+        .dropzone span {
+            display: block;
+            color: #96988e;
+            font-size: 10px;
+            margin-top: 4px
+        }
+
+        .file-meta {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 9px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px
+        }
+
+        .product-btn {
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 9px;
+            padding: 8px 5px 7px;
+            text-align: center;
+            min-width: 0
+        }
+
+        .product-btn.active {
+            border: 1.5px solid #69784b;
+            background: #f7f8f1
+        }
+
+        .product-btn svg {
+            display: block;
+            margin: auto auto 5px;
+            width: 43px;
+            height: 44px
+        }
+
+        .product-btn span {
+            font-size: 10px;
+            font-weight: 600;
+            display: block;
+            line-height: 1.2
+        }
+
+        .product-btn small {
+            font-size: 9px;
+            color: #96988e
+        }
+
+        .shirt-choice {
+            display: flex;
+            gap: 6px;
+            margin-top: 9px
+        }
+
+        .choice {
+            flex: 1;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            padding: 7px 6px;
+            background: #fff;
+            text-align: center;
+            font-size: 10px;
+            color: #74766e
+        }
+
+        .choice.active {
+            border-color: #8b986c;
+            background: #f4f6ed;
+            color: #404738;
+            font-weight: 700
+        }
+
+        .swatches {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .swatch {
+            width: 23px;
+            height: 23px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 0 1px #deded7;
+            cursor: pointer
+        }
+
+        .swatch.active {
+            box-shadow: 0 0 0 2px #708149
+        }
+
+        .control {
+            margin-top: 13px
+        }
+
+        .control:first-of-type {
+            margin-top: 0
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 7px
+        }
+
+        .value {
+            font: 10px 'DM Mono', monospace;
+            color: #7f8179
+        }
+
+        .range {
+            width: 100%;
+            height: 4px;
+            accent-color: #7a8c50;
+            cursor: pointer
+        }
+
+        .hint {
+            font-size: 9px;
+            color: #9b9d94;
+            line-height: 1.5;
+            margin-top: 7px
+        }
+
+        .toolrow {
+            display: flex;
+            gap: 6px
+        }
+
+        .toolbtn {
+            flex: 1;
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 7px;
+            padding: 8px 4px;
+            font-size: 10px;
+            font-weight: 600
+        }
+
+        .toolbtn.active {
+            border-color: #a2ad83;
+            background: #f5f7ed
+        }
+
+        .toolbtn:disabled {
+            opacity: .45;
+            cursor: not-allowed
+        }
+
+        .center-panel {
+            min-width: 0
+        }
+
+        .canvas-toolbar {
+            height: 46px;
+            border-bottom: 1px solid var(--line);
+            padding: 0 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .mock-name {
+            font-size: 11px;
+            font-weight: 700
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 5px
+        }
+
+        .icon-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid transparent;
+            background: transparent;
+            border-radius: 7px;
+            color: #77796f;
+            display: grid;
+            place-items: center
+        }
+
+        .icon-btn:hover {
+            background: #f3f3ef;
+            border-color: var(--line)
+        }
+
+        .stage {
+            position: relative;
+            min-height: 600px;
+            height: calc(100vh - 235px);
+            max-height: 790px;
+            overflow: hidden;
+            background-color: #f2f1ed;
+            background-image: radial-gradient(#dbd9d2 0.7px, transparent .7px);
+            background-size: 18px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .mockup {
+            width: min(83%, 570px);
+            height: 94%;
+            max-height: 660px;
+            position: relative;
+            display: grid;
+            place-items: center;
+            filter: drop-shadow(0 24px 26px #28291c16);
+            transition: width .25s
+        }
+
+        .mockup.hoodie {
+            width: min(89%, 625px)
+        }
+
+        .mockup.tote {
+            width: min(71%, 470px)
+        }
+
+        .garment {
+            width: 100%;
+            height: 100%;
+            overflow: visible
+        }
+
+        .artwork-layer {
+            position: absolute;
+            left: 50%;
+            top: 37%;
+            width: 28%;
+            height: 29%;
+            display: grid;
+            place-items: center;
+            transform: translate(-50%, -50%);
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            transform-origin: center
+        }
+
+        .mockup.hoodie .artwork-layer {
+            top: 38%;
+            width: 25%;
+            height: 24%
+        }
+
+        .mockup.tote .artwork-layer {
+            top: 48%;
+            width: 38%;
+            height: 38%
+        }
+
+        .artwork-layer:active {
+            cursor: grabbing
+        }
+
+        .artwork-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: var(--art-filter, none);
+            pointer-events: none;
+            user-select: none
+        }
+
+        .design-placeholder {
+            width: 100%;
+            height: 100%;
+            border: 1px dashed #939a7a55;
+            display: grid;
+            place-items: center;
+            color: #757a67;
+            font: 10px 'DM Mono', monospace;
+            letter-spacing: .7px;
+            text-align: center;
+            pointer-events: none
+        }
+
+        .stage-tip {
+            position: absolute;
+            bottom: 13px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffffc9;
+            border: 1px solid #e6e5de;
+            border-radius: 20px;
+            padding: 7px 12px;
+            font-size: 9px;
+            color: #76786e;
+            white-space: nowrap
+        }
+
+        .stage-zoom {
+            position: absolute;
+            bottom: 13px;
+            right: 13px;
+            font: 10px 'DM Mono', monospace;
+            color: #85877e
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 20px;
+            padding: 5px 8px;
+            font-size: 9px;
+            color: #71746a
+        }
+
+        .badge i {
+            width: 5px;
+            height: 5px;
+            background: #9bb96a;
+            border-radius: 50%
+        }
+
+        .right-panel .section {
+            padding-bottom: 18px;
+            margin-bottom: 17px
+        }
+
+        .color-input {
+            width: 34px;
+            height: 26px;
+            border: 0;
+            background: transparent;
+            padding: 0;
+            cursor: pointer
+        }
+
+        .color-line {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .color-label {
+            font-size: 10px;
+            color: #85877e
+        }
+
+        .select {
+            width: 100%;
+            padding: 9px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: #fff;
+            font-size: 11px;
+            margin-top: 9px
+        }
+
+        .export-btn {
+            width: 100%;
+            margin-top: 8px
+        }
+
+        .export-btn:first-of-type {
+            margin-top: 0
+        }
+
+        .export-note {
+            font-size: 9px;
+            color: #92948a;
+            text-align: center;
+            line-height: 1.5;
+            margin-top: 10px
+        }
+
+        .transform-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px
+        }
+
+        .number-wrap {
+            position: relative
+        }
+
+        .number-wrap span {
+            position: absolute;
+            right: 9px;
+            top: 50%;
+            transform: translateY(-50%);
+            font: 9px 'DM Mono';
+            color: #92948a
+        }
+
+        .number {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            padding: 8px;
+            font: 11px 'DM Mono';
+            outline: none
+        }
+
+        .number:focus {
+            border-color: #8e9b6c
+        }
+
+        .mini-label {
+            font-size: 9px;
+            color: #8c8e85;
+            margin-bottom: 5px
+        }
+
+        .rotate-wrap {
+            display: flex;
+            gap: 7px;
+            align-items: center
+        }
+
+        .rotate-wrap input {
+            flex: 1
+        }
+
+        .rotate-reset {
+            font-size: 9px;
+            border: 0;
+            background: none;
+            color: #787b71;
+            text-decoration: underline
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            transform: translate(-50%, 20px);
+            opacity: 0;
+            background: #2b2d26;
+            color: white;
+            padding: 11px 16px;
+            border-radius: 9px;
+            font-size: 12px;
+            transition: .22s;
+            z-index: 5;
+            pointer-events: none
+        }
+
+        .toast.show {
+            transform: translate(-50%, 0);
+            opacity: 1
+        }
+
+        .file-input {
+            display: none
+        }
+
+        @media(max-width:1120px) {
+            .layout {
+                grid-template-columns: 245px minmax(360px, 1fr)
+            }
+
+            .right-panel {
+                grid-column: 1/-1;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px
+            }
+
+            .right-panel .section {
+                padding: 0;
+                margin: 0;
+                border: 0
+            }
+
+            .stage {
+                height: 650px
+            }
+        }
+
+        @media(max-width:760px) {
+            .topbar {
+                padding: 0 16px;
+                height: 58px
+            }
+
+            .privacy {
+                display: none
+            }
+
+            .app {
+                padding: 18px 12px
+            }
+
+            .page-head {
+                align-items: start
+            }
+
+            .page-head h1 {
+                font-size: 21px
+            }
+
+            .layout {
+                display: flex;
+                flex-direction: column
+            }
+
+            .center-panel {
+                order: 0;
+                width: 100%
+            }
+
+            .left-panel {
+                order: 1;
+                width: 100%
+            }
+
+            .right-panel {
+                order: 2;
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr
+            }
+
+            .stage {
+                height: 65vh;
+                min-height: 440px;
+                max-height: 660px
+            }
+
+            .mockup {
+                width: 96%;
+                height: 90%
+            }
+
+            .mockup.hoodie {
+                width: 100%
+            }
+
+            .mockup.tote {
+                width: 75%
+            }
+
+            .step {
+                font-size: 9px;
+                margin-top: 4px
+            }
+
+            .brand {
+                font-size: 17px
+            }
+        }
+    </style>
+    <style>
+        .text-btn {
+            border: 0;
+            background: transparent;
+            padding: 3px 0;
+            color: #8b6555;
+            font-size: 10px;
+            font-weight: 600
+        }
+
+        .text-btn:hover:not(:disabled) {
+            color: #a4432f;
+            text-decoration: underline
+        }
+
+        .text-btn:disabled {
+            opacity: .42;
+            cursor: not-allowed
+        }
+    </style>
+    <style>
+        .design-layer-group {
+            position: absolute;
+            inset: 0;
+            pointer-events: none
+        }
+
+        .design-layer-group .artwork-layer {
+            pointer-events: auto;
+            display: grid;
+            border: 1px solid transparent;
+            z-index: 1
+        }
+
+        .design-layer-group .artwork-layer.selected {
+            border: 1px dashed #708149;
+            z-index: 2
+        }
+
+        .design-placeholder#placeholder {
+            display: none
+        }
+
+        .design-placeholder {
+            position: absolute;
+            left: 50%;
+            top: 42%;
+            width: 30%;
+            height: 16%;
+            transform: translate(-50%, -50%);
+            background: #ffffff45
+        }
+
+        .design-list {
+            display: grid;
+            gap: 5px;
+            margin-top: 8px;
+            max-height: 150px;
+            overflow: auto
+        }
+
+        .design-row {
+            display: flex;
+            align-items: center;
+            gap: 5px
+        }
+
+        .design-select {
+            min-width: 0;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px;
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            text-align: left;
+            font-size: 10px
+        }
+
+        .design-row.active .design-select {
+            border-color: #788750;
+            background: #f6f7f0
+        }
+
+        .design-select img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            background: #f2f1ed;
+            border-radius: 4px
+        }
+
+        .design-select span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .design-remove {
+            width: 26px;
+            height: 26px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #fff;
+            font-size: 17px;
+            line-height: 1;
+            color: #8a6055
+        }
+
+        .design-remove:hover {
+            background: #fff3ef;
+            border-color: #d8b6aa
+        }
+
+        .design-layer-group .artwork-layer img {
+            pointer-events: none
+        }
+
+        #clearArtwork {
+            font-size: 10px;
+            border: 0;
+            background: none;
+            color: #777;
+            text-decoration: underline
+        }
+
+        #clearArtwork:disabled {
+            opacity: .45;
+            cursor: default
+        }
+    </style>
+    <style>
+        :root {
+            --ink: #f5f6f7;
+            --muted: #aeb5bc;
+            --line: #2d3238;
+            --paper: #050607;
+            --white: #101316;
+            --lime: #c6cfd7;
+            --green: #b9c3cd;
+            --panel: #0a0c0f;
+            --shadow: 0 16px 48px #0009
+        }
+
+        body {
+            background: var(--paper);
+            color: var(--ink);
+            font-family: "Chakra Petch", system-ui, sans-serif
+        }
+
+        button,
+        input,
+        select {
+            font-family: "Chakra Petch", system-ui, sans-serif
+        }
+
+        .topbar {
+            height: 78px;
+            padding: 0 34px;
+            background: #050607;
+            border-bottom: 1px solid #2d3238;
+            position: relative
+        }
+
+        .dawn-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            letter-spacing: 2px
+        }
+
+        .dawn-brand img {
+            display: block;
+            width: 138px;
+            height: 46px;
+            object-fit: contain
+        }
+
+        .brand-caption {
+            border-left: 1px solid #555d65;
+            padding-left: 14px;
+            color: #aab4bd;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 2.3px
+        }
+
+        .privacy {
+            color: #b9c3cd;
+            letter-spacing: .4px;
+            text-transform: uppercase;
+            font-size: 10px
+        }
+
+        .btn {
+            background: #f7f8f9;
+            color: #050607;
+            border: 1px solid #f7f8f9;
+            border-radius: 999px;
+            padding: 10px 17px;
+            font-weight: 700;
+            letter-spacing: .3px
+        }
+
+        .btn:hover {
+            background: #c7d0d8;
+            border-color: #c7d0d8;
+            color: #050607
+        }
+
+        .btn.dark {
+            background: #f7f8f9;
+            color: #050607;
+            border-color: #f7f8f9
+        }
+
+        .btn.dark:hover {
+            background: #c7d0d8
+        }
+
+        .btn.lime {
+            background: #b9c3cd;
+            border-color: #b9c3cd;
+            color: #060708
+        }
+
+        .app {
+            max-width: 1540px;
+            padding: 27px 30px 40px
+        }
+
+        .page-head h1 {
+            font-family: "Grenze Gotisch", "Chakra Petch", serif;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: .2px;
+            font-style: italic
+        }
+
+        .page-head p {
+            color: #adb5bd;
+            font-size: 13px
+        }
+
+        .eyebrow,
+        .step {
+            color: #9ca7b0;
+            letter-spacing: 1.8px
+        }
+
+        .panel {
+            background: #0d1013;
+            border: 1px solid #272c31;
+            box-shadow: 0 14px 38px #0007;
+            border-radius: 12px
+        }
+
+        .panel-title {
+            font-family: "Chakra Petch", sans-serif;
+            color: #f2f4f6;
+            letter-spacing: .3px
+        }
+
+        .section {
+            border-color: #2a2f34
+        }
+
+        .small-note,
+        .hint,
+        .mini-label,
+        .value,
+        .export-note,
+        .color-label {
+            color: #9ca6ae
+        }
+
+        .dropzone {
+            background: #090b0d;
+            border-color: #4c555e;
+            color: #f1f3f5
+        }
+
+        .dropzone:hover,
+        .dropzone.drag {
+            background: #171b20;
+            border-color: #c0cad2
+        }
+
+        .upload-icon {
+            background: #20262b;
+            color: #d5dde3
+        }
+
+        .product-btn {
+            background: #0b0e11;
+            border-color: #333a40;
+            color: #f0f2f4
+        }
+
+        .product-btn.active {
+            border-color: #c3cdd5;
+            background: #171b1f
+        }
+
+        .choice {
+            background: #0b0e11;
+            border-color: #343a40;
+            color: #bbc2c8
+        }
+
+        .choice.active {
+            border-color: #c4ced6;
+            background: #20262b;
+            color: #fff
+        }
+
+        .swatch {
+            box-shadow: 0 0 0 1px #747d85;
+            border-color: #0d1013
+        }
+
+        .swatch.active {
+            box-shadow: 0 0 0 2px #dbe3e9
+        }
+
+        .control-label {
+            color: #e6e9eb
+        }
+
+        .range {
+            accent-color: #c7d0d8
+        }
+
+        .toolbtn {
+            background: #111518;
+            border-color: #353c42;
+            color: #e9edef
+        }
+
+        .toolbtn.active {
+            border-color: #ccd5dc;
+            background: #252b30;
+            color: #fff
+        }
+
+        .toolbtn:disabled {
+            opacity: .4
+        }
+
+        .center-panel {
+            background: #090b0d
+        }
+
+        .canvas-toolbar {
+            background: #090b0d;
+            border-color: #2a2f34
+        }
+
+        .mock-name {
+            color: #eef1f3;
+            letter-spacing: .35px
+        }
+
+        .stage {
+            background: #050607 url("https://jayseth34.github.io/DawnSogniWeb/images/gothic-hall.webp") center 44%/cover no-repeat;
+            isolation: isolate
+        }
+
+        .stage::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, #020304b8, #040608d9 52%, #030405e8);
+            z-index: -1
+        }
+
+        .stage-tip {
+            background: #0b0e11e8;
+            border-color: #343a40;
+            color: #cbd2d8
+        }
+
+        .stage-zoom {
+            color: #c2c9cf
+        }
+
+        .badge {
+            background: #111518;
+            border-color: #343a40;
+            color: #cbd2d8;
+            letter-spacing: 1px
+        }
+
+        .badge i {
+            background: #c1cbd3
+        }
+
+        .artwork-layer.selected {
+            border-color: #e4ebef !important
+        }
+
+        .design-placeholder {
+            color: #cad1d6;
+            border-color: #7f8b94
+        }
+
+        .design-row .design-select {
+            background: #0b0e11;
+            border-color: #343a40;
+            color: #e9ecef
+        }
+
+        .design-row.active .design-select {
+            border-color: #c6d0d8;
+            background: #1a1f23
+        }
+
+        .design-select img {
+            background: #24292e
+        }
+
+        .design-remove {
+            background: #14181b;
+            border-color: #444b51;
+            color: #e5a39d
+        }
+
+        .design-remove:hover {
+            background: #33201e;
+            border-color: #a85e55
+        }
+
+        .number {
+            background: #090b0d;
+            border-color: #343a40;
+            color: #f4f6f8
+        }
+
+        .number:focus {
+            border-color: #c4ced6
+        }
+
+        .rotate-reset,
+        #clearArtwork {
+            color: #c2c9cf
+        }
+
+        .icon-btn {
+            color: #c2c9cf
+        }
+
+        .icon-btn:hover {
+            background: #1a1e22;
+            border-color: #373d43;
+            color: white
+        }
+
+        .toast {
+            background: #edf0f2;
+            color: #070809
+        }
+
+        @media(max-width:760px) {
+            .topbar {
+                padding: 0 15px
+            }
+
+            .dawn-brand {
+                gap: 8px
+            }
+
+            .dawn-brand img {
+                width: 110px;
+                height: 38px
+            }
+
+            .brand-caption {
+                font-size: 8px;
+                padding-left: 9px;
+                letter-spacing: 1.5px
+            }
+
+            .page-head h1 {
+                font-size: 27px
+            }
+        }
+    </style>
+    <style>
+        .select {
+            background: #090b0d;
+            border-color: #343a40;
+            color: #f4f6f8
+        }
+
+        .select option {
+            background: #090b0d;
+            color: #f4f6f8
+        }
+
+        .text-input {
+            width: 100%;
+            resize: vertical;
+            min-height: 58px;
+            padding: 9px 10px;
+            background: #090b0d;
+            border: 1px solid #343a40;
+            border-radius: 8px;
+            color: #f4f6f8;
+            font: 12px "Chakra Petch", sans-serif;
+            outline: none
+        }
+
+        .text-input:focus,
+        .select:focus {
+            border-color: #c4ced6
+        }
+
+        .text-style-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 11px;
+            align-items: center;
+            margin-top: 12px
+        }
+
+        .color-picker-label,
+        .text-size-control {
+            font-size: 10px;
+            color: #bfc7cd
+        }
+
+        .color-picker-label {
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .color-picker-label input {
+            width: 28px;
+            height: 25px;
+            padding: 0;
+            border: 1px solid #444b51;
+            border-radius: 5px;
+            background: transparent
+        }
+
+        .text-size-control {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 7px
+        }
+
+        .text-size-control span {
+            font: 10px "DM Mono", monospace;
+            color: #aeb5bc;
+            white-space: nowrap
+        }
+
+        .font-preview {
+            margin-top: 12px;
+            padding: 11px 8px;
+            background: #07090b;
+            border: 1px solid #272c31;
+            border-radius: 8px;
+            text-align: center;
+            color: #fff;
+            min-height: 40px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere
+        }
+
+        .add-text-btn {
+            width: 100%;
+            margin-top: 10px
+        }
+
+        .artwork-layer.text-layer {
+            height: auto !important;
+            min-height: 1em;
+            display: grid;
+            place-items: center;
+            overflow: visible
+        }
+
+        .artwork-text {
+            display: block;
+            width: 100%;
+            text-align: center;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.1;
+            user-select: none;
+            pointer-events: none;
+            text-shadow: 0 1px 6px #0005
+        }
+
+        .layer-type {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            flex: none;
+            border-radius: 4px;
+            background: #24292e;
+            color: #eef2f5;
+            font: 700 11px "Chakra Petch", sans-serif
+        }
+
+        .artwork-layer.selected.text-layer {
+            outline: 1px dashed #e4ebef;
+            outline-offset: 3px
+        }
+
+        .artwork-layer.selected.text-layer img {
+            display: none
+        }
+    </style>
+    <link rel="stylesheet" href="theme.css?v=1">
+</head>
+
 <body>
-<header class="topbar"><div class="brand dawn-brand"><img src="https://jayseth34.github.io/DawnSogniWeb/images/logo-full.webp" alt="Dawn Sogni"><span class="brand-caption">PRINT STUDIO</span></div><div class="top-right"><div class="privacy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Your artwork stays on this device</div><button class="btn" id="resetBtn">↺ &nbsp;Reset design</button></div></header>
-<main class="app"><div class="page-head"><div><div class="eyebrow">YOUR CREATIVE WORKSPACE</div><h1>Design your next favorite.</h1><p>Make it yours. See it come to life.</p></div><div class="step">STUDIO &nbsp; / &nbsp; <b>01</b></div></div>
-<div class="layout">
-<aside class="panel left-panel">
-<section class="section"><div class="section-head"><div class="panel-title">01 &nbsp; Add your artwork</div><button class="text-btn" id="clearArtwork" type="button" disabled>Clear all</button></div><div class="dropzone" id="dropzone"><input class="file-input" type="file" id="fileInput" accept="image/*" multiple><div class="upload-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m-5 5 5-5 5 5"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></div><strong>Drop your design here</strong><span>or click to browse your files</span></div><div class="file-meta" id="fileMeta">No artwork added yet</div><div class="design-list" id="designList" aria-label="Uploaded design layers"></div></section>
-<section class="section" id="textTools"><div class="section-head"><div class="panel-title">02 &nbsp; Add text</div><span class="small-note">Live preview</span></div><textarea class="text-input" id="textContent" rows="2" placeholder="Type your text">Your text</textarea><div class="control"><div class="mini-label">Font</div><select class="select" id="textFont"><option value="Chakra Petch">Chakra Petch</option><option value="Grenze Gotisch">Grenze Gotisch</option><option value="Cinzel">Cinzel</option><option value="Cormorant Garamond">Cormorant Garamond</option><option value="Oswald">Oswald</option><option value="Playfair Display">Playfair Display</option><option value="Space Grotesk">Space Grotesk</option></select></div><div class="text-style-row"><label class="color-picker-label">Text color <input type="color" id="textColor" value="#ffffff"></label><label class="text-size-control">Size <input type="range" class="range" id="textSize" min="16" max="120" value="48"><span id="textSizeVal">48 px</span></label></div><div class="font-preview" id="fontPreview">Your text</div><button class="btn dark add-text-btn" id="addText" type="button">＋ &nbsp; Add text layer</button></section>
-<section class="section"><div class="section-head"><div class="panel-title">03 &nbsp; Choose a product</div></div><div class="product-grid"><div class="product-btn active" aria-current="true"><svg viewBox="0 0 64 64" fill="none"><path d="M21 10 8 16 3 30l12 5 5-9v28h24V26l5 9 12-5-5-14-13-6c-3 8-18 8-22 0Z" fill="#2353a0" stroke="#344b70" stroke-width="1.5"/></svg><span>T-shirt</span><small>Mockup</small></div></div><div class="shirt-choice" id="shirtChoice"><button class="choice active" data-fit="regular">Regular fit</button><button class="choice" data-fit="oversized">Oversized</button></div></section>
-<section class="section"><div class="section-head"><div class="panel-title">04 &nbsp; T-shirt color</div><span class="small-note">14 colors</span></div><div class="swatches" id="swatches"><button class="swatch" title="Maroon" aria-label="Maroon" data-color="#85243d" style="background:#85243d"></button><button class="swatch" title="Lavender" aria-label="Lavender" data-color="#b7acd1" style="background:#b7acd1"></button><button class="swatch" title="Natural" aria-label="Natural" data-color="#f3eee5" style="background:#f3eee5"></button><button class="swatch" title="White" aria-label="White" data-color="#fafafa" style="background:#fafafa"></button><button class="swatch" title="Black" aria-label="Black" data-color="#161616" style="background:#161616"></button><button class="swatch" title="Navy" aria-label="Navy" data-color="#192b50" style="background:#192b50"></button><button class="swatch" title="Brown" aria-label="Brown" data-color="#593722" style="background:#593722"></button><button class="swatch active" title="Royal blue" aria-label="Royal blue" data-color="#1f4f9c" style="background:#1f4f9c"></button><button class="swatch" title="Charcoal" aria-label="Charcoal" data-color="#343434" style="background:#343434"></button><button class="swatch" title="Sky blue" aria-label="Sky blue" data-color="#83bce1" style="background:#83bce1"></button><button class="swatch" title="Red" aria-label="Red" data-color="#e31e2b" style="background:#e31e2b"></button><button class="swatch" title="Sand" aria-label="Sand" data-color="#e8d6ac" style="background:#e8d6ac"></button><button class="swatch" title="Olive" aria-label="Olive" data-color="#65733d" style="background:#65733d"></button><button class="swatch" title="Forest green" aria-label="Forest green" data-color="#06452e" style="background:#06452e"></button></div></section>
-<section><div class="section-head"><div class="panel-title">05 &nbsp; Image cleanup</div><span class="small-note">Browser tools</span></div><div class="toolrow"><button class="toolbtn" id="removeBg" disabled>✦ &nbsp;Remove BG</button><button class="toolbtn" id="sampleBg" disabled>◉ &nbsp;Pick color</button></div><div class="control"><div class="control-label"><span>Removal tolerance</span><span class="value" id="tolVal">32</span></div><input class="range" id="tolerance" type="range" min="0" max="150" value="32"></div><p class="hint">Pick a background color from your image, then adjust tolerance. Works best on flat, solid backgrounds.</p></section>
-</aside>
-<section class="panel center-panel"><div class="canvas-toolbar"><span class="mock-name" id="mockName">Classic tee · Regular fit</span><div style="display:flex;align-items:center;gap:8px"><span class="badge"><i></i> LIVE PREVIEW</span><div class="view-controls"><button class="icon-btn" title="Zoom out" id="zoomOut">−</button><button class="icon-btn" title="Fit" id="zoomFit">⌂</button><button class="icon-btn" title="Zoom in" id="zoomIn">+</button></div></div></div><div class="stage" id="stage"><div class="mockup" id="mockup"><svg class="garment" id="garment" viewBox="0 0 556 433" preserveAspectRatio="xMidYMid meet"></svg><div class="design-placeholder" id="placeholder">UPLOAD ARTWORK TO START</div><div class="design-layer-group" id="designLayers"></div></div><div class="stage-tip">↔ &nbsp; Drag your artwork to position it</div><div class="stage-zoom" id="zoomLabel">100%</div></div></section>
-<aside class="panel right-panel"><section class="section"><div class="section-head"><div class="panel-title">Design adjustments</div></div><div class="control"><div class="control-label"><span>Brightness</span><span class="value" id="brightnessVal">100%</span></div><input class="range" id="brightness" type="range" min="50" max="150" value="100"></div><div class="control"><div class="control-label"><span>Contrast</span><span class="value" id="contrastVal">100%</span></div><input class="range" id="contrast" type="range" min="50" max="150" value="100"></div><div class="control"><div class="control-label"><span>Sharpness</span><span class="value" id="sharpnessVal">0%</span></div><input class="range" id="sharpness" type="range" min="0" max="100" value="0"></div><div class="hint">Adjustments affect your exported artwork.</div></section>
-<section class="section"><div class="section-head"><div class="panel-title">Placement</div><button class="rotate-reset" id="centerArt">Center</button></div><div class="transform-grid"><div><div class="mini-label">Width</div><div class="number-wrap"><input class="number" id="artWidth" type="number" min="5" max="90" value="28"><span>%</span></div></div><div><div class="mini-label">Rotation</div><div class="number-wrap"><input class="number" id="rotation" type="number" min="-180" max="180" value="0"><span>°</span></div></div></div><div class="control"><div class="control-label"><span>Scale</span><span class="value" id="scaleVal">100%</span></div><input class="range" id="scale" type="range" min="30" max="200" value="100"></div></section>
-<section><div class="section-head"><div class="panel-title">Export your design</div></div><button class="btn dark export-btn" id="exportJpg">↓ &nbsp; Download JPG preview</button><button class="btn export-btn" id="exportPng">↓ &nbsp; Download transparent PNG</button><button class="btn export-btn" id="exportPdf">▤ &nbsp; Create PDF proof</button><div class="export-note">Your artwork never leaves this device.<br>PDF export needs an internet connection.</div></section></aside>
-</div></main><div class="toast" id="toast"></div>
-<script src="app.js"></script>
-</body></html>
+    <header class="topbar">
+        <div class="brand dawn-brand"><img src="assets/logo-full.webp" alt="Dawn Sogni"><span class="brand-caption">PRINT STUDIO</span></div>
+        <div class="top-right">
+            <a class="shop-link" href="https://jayseth34.github.io/DawnSogniWeb/" target="_blank" rel="noopener">Shop Dawn Sogni</a>
+            <div class="privacy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="4" y="10" width="16" height="11" rx="2" />
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                </svg>Your artwork stays on this device</div><button class="btn" id="resetBtn">↺ &nbsp;Reset design</button>
+        </div>
+    </header>
+    <main class="app">
+        <div class="page-head">
+            <div>
+                <div class="eyebrow">YOUR CREATIVE WORKSPACE</div>
+                <h1>Design your next favorite.</h1>
+                <p>Make it yours. See it come to life.</p>
+            </div>
+            <div class="step">STUDIO &nbsp; / &nbsp; <b>01</b></div>
+        </div>
+        <div class="layout">
+            <aside class="panel left-panel">
+                <section class="section">
+                    <div class="section-head">
+                        <div class="panel-title">01 &nbsp; Add your artwork</div><button class="text-btn" id="clearArtwork" type="button" disabled>Clear all</button>
+                    </div>
+                    <div class="dropzone" id="dropzone"><input class="file-input" type="file" id="fileInput" accept="image/*" multiple>
+                        <div class="upload-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M12 16V4m-5 5 5-5 5 5" />
+                                <path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4" />
+                            </svg></div><strong>Drop your design here</strong><span>or click to browse your files</span>
+                    </div>
+                    <div class="file-meta" id="fileMeta">No artwork added yet</div>
+                    <div class="design-list" id="designList" aria-label="Uploaded design layers"></div>
+                </section>
+                <section class="section" id="textTools">
+                    <div class="section-head">
+                        <div class="panel-title">02 &nbsp; Add text</div><span class="small-note">Live preview</span>
+                    </div><textarea class="text-input" id="textContent" rows="2" placeholder="Type your text">Your text</textarea>
+                    <div class="control">
+                        <div class="mini-label">Font <span class="font-count" id="fontCount"></span></div>
+                        <input type="hidden" id="textFont" value="Grenze Gotisch">
+                        <div class="font-picker">
+                            <input class="font-search" id="fontSearch" type="search" placeholder="Search fonts" aria-label="Search fonts" autocomplete="off">
+                            <div class="font-cats" id="fontCats" role="tablist" aria-label="Font styles"></div>
+                            <div class="font-list" id="fontList" role="listbox" aria-label="Fonts"></div>
+                        </div>
+                        <div class="font-row">
+                            <div class="seg" role="group" aria-label="Weight"><button type="button" class="seg-btn active" data-weight="400">Regular</button><button type="button" class="seg-btn" data-weight="700">Bold</button></div>
+                            <label class="upload-font">＋ Your own font<input type="file" id="fontUpload" accept=".ttf,.otf,.woff,.woff2" hidden></label>
+                        </div>
+                    </div>
+                    <div class="text-style-row"><label class="color-picker-label">Text color <input type="color" id="textColor" value="#ffffff"></label><label class="text-size-control">Size <input type="range" class="range" id="textSize" min="16" max="120" value="48"><span id="textSizeVal">48 px</span></label></div>
+                    <div class="font-preview" id="fontPreview">Your text</div><button class="btn dark add-text-btn" id="addText" type="button">＋ &nbsp; Add text layer</button>
+                </section>
+                <section class="section">
+                    <div class="section-head">
+                        <div class="panel-title">03 &nbsp; Choose a product</div>
+                    </div>
+                    <div class="product-grid">
+                        <div class="product-btn active" aria-current="true"><svg viewBox="0 0 64 64" fill="none">
+                                <path d="M21 10 8 16 3 30l12 5 5-9v28h24V26l5 9 12-5-5-14-13-6c-3 8-18 8-22 0Z" fill="#2353a0" stroke="#344b70" stroke-width="1.5" />
+                            </svg><span>T-shirt</span><small>Mockup</small></div>
+                    </div>
+                    <div class="shirt-choice" id="shirtChoice"><button class="choice active" data-fit="regular">Regular fit</button><button class="choice" data-fit="oversized">Oversized</button></div>
+                </section>
+                <section class="section">
+                    <div class="section-head">
+                        <div class="panel-title">04 &nbsp; T-shirt color</div><span class="small-note">14 colors</span>
+                    </div>
+                    <div class="swatches" id="swatches"><button class="swatch" title="Maroon" aria-label="Maroon" data-color="#85243d" style="background:#85243d"></button><button class="swatch" title="Lavender" aria-label="Lavender" data-color="#b7acd1" style="background:#b7acd1"></button><button class="swatch" title="Natural" aria-label="Natural" data-color="#f3eee5" style="background:#f3eee5"></button><button class="swatch" title="White" aria-label="White" data-color="#fafafa" style="background:#fafafa"></button><button class="swatch" title="Black" aria-label="Black" data-color="#161616" style="background:#161616"></button><button class="swatch" title="Navy" aria-label="Navy" data-color="#192b50" style="background:#192b50"></button><button class="swatch" title="Brown" aria-label="Brown" data-color="#593722" style="background:#593722"></button><button class="swatch active" title="Royal blue" aria-label="Royal blue" data-color="#1f4f9c" style="background:#1f4f9c"></button><button class="swatch" title="Charcoal" aria-label="Charcoal" data-color="#343434" style="background:#343434"></button><button class="swatch" title="Sky blue" aria-label="Sky blue" data-color="#83bce1" style="background:#83bce1"></button><button class="swatch" title="Red" aria-label="Red" data-color="#e31e2b" style="background:#e31e2b"></button><button class="swatch" title="Sand" aria-label="Sand" data-color="#e8d6ac" style="background:#e8d6ac"></button><button class="swatch" title="Olive" aria-label="Olive" data-color="#65733d" style="background:#65733d"></button><button class="swatch" title="Forest green" aria-label="Forest green" data-color="#06452e" style="background:#06452e"></button></div>
+                </section>
+                <section>
+                    <div class="section-head">
+                        <div class="panel-title">05 &nbsp; Crop &amp; cleanup</div><span class="small-note">Browser tools</span>
+                    </div>
+                    <div class="toolrow"><button class="toolbtn crop-btn" id="cropBtn" disabled>✂ &nbsp;Crop image</button></div>
+                    <div class="toolrow"><button class="toolbtn" id="removeBg" disabled>✦ &nbsp;Remove BG</button><button class="toolbtn" id="sampleBg" disabled>◉ &nbsp;Pick color</button></div>
+                    <div class="control">
+                        <div class="control-label"><span>Removal tolerance</span><span class="value" id="tolVal">32</span></div><input class="range" id="tolerance" type="range" min="0" max="150" value="32">
+                    </div>
+                    <p class="hint">Pick a background color from your image, then adjust tolerance. Works best on flat, solid backgrounds.</p>
+                </section>
+            </aside>
+            <section class="panel center-panel">
+                <div class="canvas-toolbar"><span class="mock-name" id="mockName">Classic tee · Regular fit</span>
+                    <div style="display:flex;align-items:center;gap:8px"><span class="badge"><i></i> LIVE PREVIEW</span>
+                        <div class="view-controls"><button class="icon-btn" title="Zoom out" id="zoomOut">−</button><button class="icon-btn" title="Fit" id="zoomFit">⌂</button><button class="icon-btn" title="Zoom in" id="zoomIn">+</button></div>
+                    </div>
+                </div>
+                <div class="stage" id="stage">
+                    <div class="mockup" id="mockup"><svg class="garment" id="garment" viewBox="0 0 556 433" preserveAspectRatio="xMidYMid meet"></svg>
+                        <div class="design-placeholder" id="placeholder">UPLOAD ARTWORK TO START</div>
+                        <div class="design-layer-group" id="designLayers"></div>
+                    </div>
+                    <div class="stage-tip">↔ &nbsp; Drag your artwork to position it</div>
+                    <div class="stage-zoom" id="zoomLabel">100%</div>
+                </div>
+            </section>
+            <aside class="panel right-panel">
+                <section class="section">
+                    <div class="section-head">
+                        <div class="panel-title">Design adjustments</div>
+                    </div>
+                    <div class="control">
+                        <div class="control-label"><span>Brightness</span><span class="value" id="brightnessVal">100%</span></div><input class="range" id="brightness" type="range" min="50" max="150" value="100">
+                    </div>
+                    <div class="control">
+                        <div class="control-label"><span>Contrast</span><span class="value" id="contrastVal">100%</span></div><input class="range" id="contrast" type="range" min="50" max="150" value="100">
+                    </div>
+                    <div class="control">
+                        <div class="control-label"><span>Sharpness</span><span class="value" id="sharpnessVal">0%</span></div><input class="range" id="sharpness" type="range" min="0" max="100" value="0">
+                    </div>
+                    <div class="hint">Adjustments affect your exported artwork.</div>
+                </section>
+                <section class="section">
+                    <div class="section-head">
+                        <div class="panel-title">Placement</div><button class="rotate-reset" id="centerArt">Center</button>
+                    </div>
+                    <div class="transform-grid">
+                        <div>
+                            <div class="mini-label">Width</div>
+                            <div class="number-wrap"><input class="number" id="artWidth" type="number" min="5" max="90" value="28"><span>%</span></div>
+                        </div>
+                        <div>
+                            <div class="mini-label">Rotation</div>
+                            <div class="number-wrap"><input class="number" id="rotation" type="number" min="-180" max="180" value="0"><span>°</span></div>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <div class="control-label"><span>Scale</span><span class="value" id="scaleVal">100%</span></div><input class="range" id="scale" type="range" min="30" max="200" value="100">
+                    </div>
+                </section>
+                <section>
+                    <div class="section-head">
+                        <div class="panel-title">Export your design</div>
+                    </div><button class="btn dark export-btn" id="exportJpg">↓ &nbsp; Download JPG preview</button><button class="btn export-btn" id="exportPng">↓ &nbsp; Download transparent PNG</button><button class="btn export-btn" id="exportPdf">▤ &nbsp; Create PDF proof</button><button class="btn export-btn wa-btn" id="sendWa">Order this design on WhatsApp</button>
+                    <div class="export-note">Your artwork never leaves this device.<br>PDF export needs an internet connection.</div>
+                </section>
+            </aside>
+        </div>
+    </main>
+    <dialog class="crop-dialog" id="cropDialog" aria-labelledby="cropTitle">
+        <div class="crop-head">
+            <h2 id="cropTitle">Crop image</h2>
+            <div class="crop-ratios" id="cropRatios" role="group" aria-label="Shape">
+                <button type="button" class="seg-btn active" data-ratio="free">Free</button>
+                <button type="button" class="seg-btn" data-ratio="1">1:1</button>
+                <button type="button" class="seg-btn" data-ratio="0.8">4:5</button>
+                <button type="button" class="seg-btn" data-ratio="0.75">3:4</button>
+                <button type="button" class="seg-btn" data-ratio="1.7778">16:9</button>
+                <button type="button" class="seg-btn" data-ratio="orig">Original</button>
+            </div>
+        </div>
+        <div class="crop-stage" id="cropStage">
+            <img id="cropImg" alt="Image being cropped">
+            <div class="crop-shade" id="cropShade"></div>
+            <div class="crop-box" id="cropBox" tabindex="0" aria-label="Crop area. Drag to move, use arrow keys to nudge.">
+                <span class="crop-grid"></span>
+                <span class="h nw" data-h="nw"></span><span class="h n" data-h="n"></span><span class="h ne" data-h="ne"></span>
+                <span class="h e" data-h="e"></span><span class="h se" data-h="se"></span><span class="h s" data-h="s"></span>
+                <span class="h sw" data-h="sw"></span><span class="h w" data-h="w"></span>
+            </div>
+        </div>
+        <div class="crop-foot">
+            <span class="crop-size" id="cropSize"></span>
+            <div class="crop-actions">
+                <button type="button" class="btn" id="cropReset">Reset</button>
+                <button type="button" class="btn" id="cropCancel">Cancel</button>
+                <button type="button" class="btn dark" id="cropApply">Apply crop</button>
+            </div>
+        </div>
+    </dialog>
+    <div class="toast" id="toast"></div>
+    <script src="fonts.js?v=1"></script>
+    <script src="app.js?v=1"></script>
+</body>
 
-
-
-
-
-
-
-
-
-
+</html>
