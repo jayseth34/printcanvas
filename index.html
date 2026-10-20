@@ -1427,14 +1427,14 @@
             display: none
         }
     </style>
-    <link rel="stylesheet" href="theme.css?v=1">
+    <link rel="stylesheet" href="theme.css?v=2">
 </head>
 
 <body>
     <header class="topbar">
         <div class="brand dawn-brand"><img src="assets/logo-full.webp" alt="Dawn Sogni"><span class="brand-caption">PRINT STUDIO</span></div>
         <div class="top-right">
-            <a class="shop-link" href="https://jayseth34.github.io/DawnSogniWeb/" target="_blank" rel="noopener">Shop Dawn Sogni</a>
+            <a class="shop-link" href="https://jayseth34.github.io/DawnSogniWeb/">Shop Dawn Sogni</a>
             <div class="privacy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <rect x="4" y="10" width="16" height="11" rx="2" />
                     <path d="M8 10V7a4 4 0 0 1 8 0v3" />
@@ -1515,11 +1515,12 @@
                 </section>
             </aside>
             <section class="panel center-panel">
-                <div class="canvas-toolbar"><span class="mock-name" id="mockName">Classic tee · Regular fit</span>
+                <div class="canvas-toolbar"><span class="mock-name" id="mockName">Regular fit · Front</span>
                     <div style="display:flex;align-items:center;gap:8px"><span class="badge"><i></i> LIVE PREVIEW</span>
                         <div class="view-controls"><button class="icon-btn" title="Zoom out" id="zoomOut">−</button><button class="icon-btn" title="Fit" id="zoomFit">⌂</button><button class="icon-btn" title="Zoom in" id="zoomIn">+</button></div>
                     </div>
                 </div>
+                <div class="side-bar" role="tablist" aria-label="Print side"><button type="button" class="side-btn active" role="tab" aria-selected="true" data-side="front">Front <b id="cntFront"></b></button><button type="button" class="side-btn" role="tab" aria-selected="false" data-side="back">Back <b id="cntBack"></b></button></div>
                 <div class="stage" id="stage">
                     <div class="mockup" id="mockup"><svg class="garment" id="garment" viewBox="0 0 556 433" preserveAspectRatio="xMidYMid meet"></svg>
                         <div class="design-placeholder" id="placeholder">UPLOAD ARTWORK TO START</div>
@@ -1566,8 +1567,8 @@
                 <section>
                     <div class="section-head">
                         <div class="panel-title">Export your design</div>
-                    </div><button class="btn dark export-btn" id="exportJpg">↓ &nbsp; Download JPG preview</button><button class="btn export-btn" id="exportPng">↓ &nbsp; Download transparent PNG</button><button class="btn export-btn" id="exportPdf">▤ &nbsp; Create PDF proof</button><button class="btn export-btn wa-btn" id="sendWa">Order this design on WhatsApp</button>
-                    <div class="export-note">Your artwork never leaves this device.<br>PDF export needs an internet connection.</div>
+                    </div><button class="btn dark export-btn" id="exportJpg">↓ &nbsp; Download JPG preview</button><button class="btn export-btn" id="exportPng">↓ &nbsp; Download print file (PNG)</button><button class="btn export-btn" id="exportPdf">▤ &nbsp; Create PDF proof</button><button class="btn export-btn wa-btn" id="sendWa">Send design &amp; artwork on WhatsApp</button>
+                    <div class="export-note">On a phone, WhatsApp opens with your preview, print files and original artwork already attached. Just pick the Dawn Sogni chat.<br>Nothing is uploaded anywhere else.</div>
                 </section>
             </aside>
         </div>
@@ -1605,7 +1606,7 @@
     </dialog>
     <div class="toast" id="toast"></div>
     <script src="fonts.js?v=1"></script>
-    <script src="app.js?v=1"></script>
+    <script src="app.js?v=2"></script>
 </body>
 
 </html>

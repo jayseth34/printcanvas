@@ -155,3 +155,20 @@ body::before {
   .export-btn { width: 100% !important; }
   .page-head h1 { font-size: 34px !important; }
 }
+
+/* front / back workspaces */
+.side-bar { display: flex; justify-content: center; gap: 6px; padding: 12px 0 0; }
+.side-btn {
+  min-width: 112px; padding: 9px 18px; border-radius: 999px; cursor: pointer;
+  background: transparent; color: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.18);
+  font: 600 12px/1 "Chakra Petch", sans-serif; letter-spacing: .14em; text-transform: uppercase;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.side-btn:hover { color: #fff; border-color: rgba(255,255,255,.4); }
+.side-btn.active { background: #fff; color: #000; border-color: #fff; }
+.side-btn b {
+  display: inline-grid; place-items: center; min-width: 18px; height: 18px; margin-left: 6px; padding: 0 5px;
+  border-radius: 9px; background: rgba(255,255,255,.14); font-size: 10px; letter-spacing: 0;
+}
+.side-btn.active b { background: #000; color: #fff; }
+.side-btn b:empty { display: none; }

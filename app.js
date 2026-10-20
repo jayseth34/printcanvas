@@ -2,7 +2,9 @@
     'use strict';
     const $ = s => document.querySelector(s),
         $$ = s => [...document.querySelectorAll(s)];
-    const designs = [];
+    const sides = { front: [], back: [] };
+    let side = 'front', designs = sides.front;
+    const allDesigns = () => [...sides.front, ...sides.back];
     let active = null,
         product = 'tee',
         fit = 'regular',
@@ -44,7 +46,7 @@
         }
         return fontLoads.get(key);
     }
-    const fontsReady = () => Promise.all(designs.filter(d => d.type === 'text').map(d => loadFont(d.fontFamily, d.fontWeight))).then(() => document.fonts.ready);
+    const fontsReady = () => Promise.all(allDesigns().filter(d => d.type === 'text').map(d => loadFont(d.fontFamily, d.fontWeight))).then(() => document.fonts.ready);
     let fontCat = 'All', textWeight = 400;
     function renderFontCats() {
         const cats = ['All', ...new Set(FONTS.map(f => f.cat)), 'Yours'];
@@ -81,12 +83,19 @@
         setTimeout(() => t.classList.remove('show'), 2400)
     }
 
+    const SHAPES = {
+        regular: "M235 22 C247 27 258 28 269 27 C283 27 296 23 307 19 L529 109 L486 213 L426 209 L426 414 L117 414 L119 209 L61 211 L19 109 Z",
+        oversized: "M235 22 C247 27 258 28 269 27 C283 27 296 23 307 19 L545 105 L496 220 L438 214 L438 414 L105 414 L111 214 L49 220 L3 105 Z"
+    };
+    // front: the inside of the back collar shows through the neck opening; back: a straight rib collar
+    const COLLAR = {
+        front: "M235 22 C247 27 258 28 269 27 C283 27 296 23 307 19 C300 38 286 48 270 48 C254 48 241 39 235 22 Z",
+        back: "M235 22 C247 27 258 28 269 27 C283 27 296 23 307 19 C296 27 284 31 270 31 C256 31 245 29 235 22 Z"
+    };
     function garment() {
-        const shape = "M235 22 C247 27 258 28 269 27 C283 27 296 23 307 19 L529 109 L486 213 L426 209 L426 414 L117 414 L119 209 L61 211 L19 109 Z";
-        const oversized = "M235 22 C247 27 258 28 269 27 C283 27 296 23 307 19 L545 105 L496 220 L438 214 L438 414 L105 414 L111 214 L49 220 L3 105 Z";
-        const d = fit === 'oversized' ? oversized : shape;
-        $('#garment').innerHTML = `<defs><linearGradient id="fabric" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".13"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#17202c" stop-opacity=".10"/></linearGradient><pattern id="weave" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 2h7M2 0v7" stroke="#555" stroke-opacity=".025"/></pattern></defs><path d="${d}" fill="${shirtColor}" stroke="#1b2636" stroke-opacity=".15" stroke-width="1.5"/><path d="${d}" fill="url(#fabric)"/><path d="${d}" fill="url(#weave)"/>`;
-        $('#mockName').textContent = fit === 'regular' ? 'Classic tee · Regular fit' : 'Studio tee · Oversized fit';
+        const d = SHAPES[fit];
+        $('#garment').innerHTML = `<defs><linearGradient id="fabric" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".13"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#17202c" stop-opacity=".10"/></linearGradient><pattern id="weave" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 2h7M2 0v7" stroke="#555" stroke-opacity=".025"/></pattern></defs><path d="${d}" fill="${shirtColor}" stroke="#1b2636" stroke-opacity=".15" stroke-width="1.5"/><path d="${d}" fill="url(#fabric)"/><path d="${d}" fill="url(#weave)"/><path d="${COLLAR[side]}" fill="#000" fill-opacity="${side === 'front' ? .28 : .14}"/>`;
+        $('#mockName').textContent = (fit === 'regular' ? 'Regular fit' : 'Oversized fit') + ' · ' + (side === 'front' ? 'Front' : 'Back');
         mockup.className = 'mockup' + (fit === 'oversized' ? ' oversized' : '');
         mockup.style.width = fit === 'oversized' ? 'min(93%,625px)' : '';
         designs.forEach(renderLayer)
@@ -205,7 +214,9 @@
         });
         $('#fileMeta').textContent = designs.length ? designs.length + ' layer' + (designs.length === 1 ? '' : 's') + ' added' : 'No artwork added yet';
         $('#clearArtwork').disabled = !designs.length;
-        $('#placeholder').hidden = !!designs.length
+        $('#placeholder').hidden = !!designs.length;
+        $('#cntFront').textContent = sides.front.length || '';
+        $('#cntBack').textContent = sides.back.length || ''
     }
 
     function selectDesign(d) {
@@ -392,35 +403,14 @@
             ctx.save();
             ctx.translate(ox, oy);
             ctx.scale(sx, sy);
+            const body = new Path2D(SHAPES[fit]);
             ctx.fillStyle = shirtColor;
+            ctx.fill(body);
             ctx.strokeStyle = '#1b263626';
             ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(235, 22);
-            ctx.bezierCurveTo(247, 27, 258, 28, 269, 27);
-            ctx.bezierCurveTo(283, 27, 296, 23, 307, 19);
-            if (fit === 'oversized') {
-                ctx.lineTo(545, 105);
-                ctx.lineTo(496, 220);
-                ctx.lineTo(438, 214);
-                ctx.lineTo(438, 414);
-                ctx.lineTo(105, 414);
-                ctx.lineTo(111, 214);
-                ctx.lineTo(49, 220);
-                ctx.lineTo(3, 105)
-            } else {
-                ctx.lineTo(529, 109);
-                ctx.lineTo(486, 213);
-                ctx.lineTo(426, 209);
-                ctx.lineTo(426, 414);
-                ctx.lineTo(117, 414);
-                ctx.lineTo(119, 209);
-                ctx.lineTo(61, 211);
-                ctx.lineTo(19, 109)
-            }
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
+            ctx.stroke(body);
+            ctx.fillStyle = side === 'front' ? 'rgba(0,0,0,.28)' : 'rgba(0,0,0,.14)';
+            ctx.fill(new Path2D(COLLAR[side]));
             ctx.restore()
         }
         const r = mockup.getBoundingClientRect();
@@ -532,7 +522,7 @@
     }));
     $('#clearArtwork').addEventListener('click', () => {
         [...designs].forEach(removeDesign);
-        toast('All artwork layers removed.')
+        toast((side === 'front' ? 'Front' : 'Back') + ' artwork removed.')
     });
     $$('.product-btn').forEach(b => b.onclick = () => {
         product = b.dataset.product;
@@ -586,26 +576,28 @@
         active.y = product === 'tote' ? 48 : product === 'hoodie' ? 38 : 37;
         renderLayer(active)
     };
-    $('#exportJpg').onclick = async () => { await fontsReady(); download(preview(true).toDataURL('image/jpeg', .94), 'printcanvas-preview.jpg'); };
-    $('#exportPng').onclick = async () => { await fontsReady(); download(preview(false).toDataURL('image/png'), 'printcanvas-design.png'); };
+    $('#exportJpg').onclick = async () => { await fontsReady(); download(mockupImage().toDataURL('image/jpeg', .94), 'dawn-sogni-preview.jpg'); };
+    $('#exportPng').onclick = async () => {
+        await fontsReady();
+        usedSides().forEach((s, i) => setTimeout(() => download(withSide(s, () => preview(false)).toDataURL('image/png'), `dawn-sogni-print-${s}.png`), i * 600));
+    };
     $('#exportPdf').onclick = async () => {
         await fontsReady();
         if (!window.jspdf) return toast('PDF library could not load. Check your connection and try again.');
-        const pdf = new window.jspdf.jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4'
+        const pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        usedSides().forEach((s, i) => {
+            if (i) pdf.addPage();
+            pdf.setFillColor(247, 246, 242);
+            pdf.rect(0, 0, 210, 297, 'F');
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(18);
+            pdf.text('Dawn Sogni · Design proof · ' + (s === 'front' ? 'Front' : 'Back'), 18, 20);
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(10);
+            pdf.text((fit === 'regular' ? 'Regular fit' : 'Oversized fit') + ' · ' + colorName() + ' · ' + new Date().toLocaleDateString(), 18, 28);
+            pdf.addImage(withSide(s, () => preview(true)).toDataURL('image/jpeg', .92), 'JPEG', 22, 38, 166, 166);
         });
-        pdf.setFillColor(247, 246, 242);
-        pdf.rect(0, 0, 210, 297, 'F');
-        pdf.setFont('helvetica', 'bold');
-        pdf.setFontSize(18);
-        pdf.text('PrintCanvas · Design proof', 18, 20);
-        pdf.setFont('helvetica', 'normal');
-        pdf.setFontSize(10);
-        pdf.text($('#mockName').textContent + ' · ' + new Date().toLocaleDateString(), 18, 28);
-        pdf.addImage(preview(true).toDataURL('image/jpeg', .92), 'JPEG', 22, 38, 166, 166);
-        pdf.save('printcanvas-proof.pdf')
+        pdf.save('dawn-sogni-proof.pdf')
     };
     $('#zoomIn').onclick = () => setZoom(zoom + 10);
     $('#zoomOut').onclick = () => setZoom(zoom - 10);
@@ -617,7 +609,7 @@
         $('#zoomLabel').textContent = zoom + '%'
     }
     $('#resetBtn').onclick = () => {
-        designs.forEach(d => {
+        allDesigns().forEach(d => {
             Object.assign(d, defaults());
             renderLayer(d)
         });
@@ -743,17 +735,93 @@
     });
     addEventListener('resize', () => { if (cropDlg.open) drawBox(); });
 
-    /* ---------- order on WhatsApp ---------- */
+    /* ---------- front / back workspaces ---------- */
+    const showLayers = (list, on) => list.forEach(d => d.el && (d.el.style.display = on ? '' : 'none'));
+    function setSide(s) {
+        if (s === side) return;
+        showLayers(designs, false);
+        side = s; designs = sides[s];
+        showLayers(designs, true);
+        active = designs[designs.length - 1] || null; pickMode = false;
+        $$('.side-btn').forEach(b => { const on = b.dataset.side === s; b.classList.toggle('active', on); b.setAttribute('aria-selected', on); });
+        garment(); renderList(); syncControls();
+    }
+    $$('.side-btn').forEach(b => b.addEventListener('click', () => setSide(b.dataset.side)));
+    // run fn with another side laid out on the mockup (no visible flicker: it all happens before the next paint)
+    function withSide(s, fn) {
+        if (s === side) return fn();
+        const back = side;
+        showLayers(designs, false); side = s; designs = sides[s]; showLayers(designs, true);
+        try { return fn(); } finally { showLayers(designs, false); side = back; designs = sides[back]; showLayers(designs, true); }
+    }
+    const usedSides = () => { const u = ['front', 'back'].filter(s => sides[s].length); return u.length ? u : [side]; };
+    const colorName = () => ($('.swatch.active') || {}).title || shirtColor;
+    // one picture with every designed side next to each other
+    function mockupImage() {
+        const list = usedSides(), out = document.createElement('canvas');
+        out.width = 1400 * list.length; out.height = 1400;
+        const ctx = out.getContext('2d');
+        list.forEach((s, i) => {
+            ctx.drawImage(withSide(s, () => preview(true)), i * 1400, 0);
+            if (list.length > 1) {
+                ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.font = '600 34px "Chakra Petch", sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText(s.toUpperCase(), i * 1400 + 700, 1340);
+            }
+        });
+        return out;
+    }
+
+    /* ---------- order on WhatsApp, with the files attached ---------- */
+    const WA = '919920279905';
+    function dataUrlToFile(url, name) {
+        const [head, b64] = url.split(','), bin = atob(b64), arr = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        return new File([arr], name, { type: head.slice(5, head.indexOf(';')) });
+    }
+    function orderText() {
+        const parts = ['front', 'back'].filter(s => sides[s].length).map(s => `${s === 'front' ? 'Front' : 'Back'}: ${sides[s].length} layer${sides[s].length > 1 ? 's' : ''}`);
+        return `Hi Dawn Sogni! I designed a custom tee in the Dawn Sogni Studio and would like to order it.
+
+Fit: ${fit === 'regular' ? 'Regular' : 'Oversized'}
+Tee colour: ${colorName()}
+Print: ${parts.join(', ')}
+Size: 
+
+The preview, print files and my original artwork are attached.`;
+    }
+    function orderFiles() {
+        const files = [dataUrlToFile(mockupImage().toDataURL('image/jpeg', .9), 'dawn-sogni-preview.jpg')];
+        ['front', 'back'].filter(s => sides[s].length).forEach(s => files.push(dataUrlToFile(withSide(s, () => preview(false)).toDataURL('image/png'), `dawn-sogni-print-${s}.png`)));
+        const seen = new Set();
+        allDesigns().forEach(d => { if (d.file && /^image\/(jpeg|png|webp|gif)$/.test(d.file.type) && !seen.has(d.file) && seen.size < 6) { seen.add(d.file); files.push(d.file); } });
+        return files;
+    }
     $('#sendWa').onclick = async () => {
-        if (!designs.length) return toast('Add your artwork or text first.');
-        await fontsReady();
-        download(preview(true).toDataURL('image/jpeg', .92), 'dawn-sogni-custom-design.jpg');
-        const msg = `Hi Dawn Sogni! I made a custom design in PrintCanvas and would like to order it.\n\nProduct: ${$('#mockName').textContent}\nTee colour: ${($('.swatch.active') || {}).title || shirtColor}\n\nI'm attaching the preview image (just downloaded) and my artwork file.`;
-        setTimeout(() => window.open('https://wa.me/919920279905?text=' + encodeURIComponent(msg), '_blank', 'noopener'), 400);
-        toast('Preview downloaded. Attach it in the WhatsApp chat that opens.');
+        if (!allDesigns().length) return toast('Add your artwork or text first.');
+        if (document.fonts.status !== 'loaded') await fontsReady();
+        const text = orderText(), files = orderFiles();
+        // phones: open the share sheet with every file attached, so it goes straight into the WhatsApp chat
+        if (navigator.canShare && navigator.canShare({ files })) {
+            try { navigator.clipboard && navigator.clipboard.writeText(text).catch(() => {}); } catch (e) {}
+            try {
+                await navigator.share({ files, text, title: 'Dawn Sogni custom order' });
+                toast('Sent. We\'ll reply on WhatsApp with the price.');
+                return;
+            } catch (e) {
+                if (e.name === 'AbortError') return;
+            }
+        }
+        // computers: save the files, then open the chat to attach them
+        files.slice(0, 1 + usedSides().length).forEach((f, i) => setTimeout(() => { const u = URL.createObjectURL(f); download(u, f.name); setTimeout(() => URL.revokeObjectURL(u), 4000); }, i * 500));
+        setTimeout(() => window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(text), '_blank', 'noopener'), 900);
+        toast('Files saved. Drag them into the WhatsApp chat that opens.');
     };
+    // from the shop: ?fit=oversized&side=back
+    const qs = new URLSearchParams(location.search);
+    if (qs.get('fit') === 'oversized') { fit = 'oversized'; $$('.choice').forEach(x => x.classList.toggle('active', x.dataset.fit === 'oversized')); }
 
     garment();
     renderList();
     syncControls();
+    if (qs.get('side') === 'back') setSide('back');
 })();
