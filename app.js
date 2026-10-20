@@ -778,9 +778,12 @@
         for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
         return new File([arr], name, { type: head.slice(5, head.indexOf(';')) });
     }
-    function orderText() {
+    // order number for custom designs: DS-C-<day><month>-<4 letters>
+    const orderNo = () => { const d = new Date(), A = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let r = ''; for (let i = 0; i < 4; i++) r += A[Math.floor(Math.random() * A.length)]; return `DS-C-${String(d.getDate()).padStart(2, '0')}${String(d.getMonth() + 1).padStart(2, '0')}-${r}`; };
+    function orderText(no) {
         const parts = ['front', 'back'].filter(s => sides[s].length).map(s => `${s === 'front' ? 'Front' : 'Back'}: ${sides[s].length} layer${sides[s].length > 1 ? 's' : ''}`);
         return `Hi Dawn Sogni! I designed a custom tee in the Dawn Sogni Studio and would like to order it.
+Order no: *${no}*
 
 Fit: ${fit === 'regular' ? 'Regular' : 'Oversized'}
 Tee colour: ${colorName()}
@@ -799,13 +802,13 @@ The preview, print files and my original artwork are attached.`;
     $('#sendWa').onclick = async () => {
         if (!allDesigns().length) return toast('Add your artwork or text first.');
         if (document.fonts.status !== 'loaded') await fontsReady();
-        const text = orderText(), files = orderFiles();
+        const no = orderNo(), text = orderText(no), files = orderFiles();
         // phones: open the share sheet with every file attached, so it goes straight into the WhatsApp chat
         if (navigator.canShare && navigator.canShare({ files })) {
             try { navigator.clipboard && navigator.clipboard.writeText(text).catch(() => {}); } catch (e) {}
             try {
                 await navigator.share({ files, text, title: 'Dawn Sogni custom order' });
-                toast('Sent. We\'ll reply on WhatsApp with the price.');
+                toast(`Order ${no} sent. We'll reply on WhatsApp with the price.`);
                 return;
             } catch (e) {
                 if (e.name === 'AbortError') return;
@@ -814,7 +817,7 @@ The preview, print files and my original artwork are attached.`;
         // computers: save the files, then open the chat to attach them
         files.slice(0, 1 + usedSides().length).forEach((f, i) => setTimeout(() => { const u = URL.createObjectURL(f); download(u, f.name); setTimeout(() => URL.revokeObjectURL(u), 4000); }, i * 500));
         setTimeout(() => window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(text), '_blank', 'noopener'), 900);
-        toast('Files saved. Drag them into the WhatsApp chat that opens.');
+        toast(`Order ${no}: files saved. Drag them into the WhatsApp chat that opens.`);
     };
     // from the shop: ?fit=oversized&side=back
     const qs = new URLSearchParams(location.search);
