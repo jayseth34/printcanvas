@@ -1438,7 +1438,11 @@
             display: none
         }
     </style>
-    <link rel="stylesheet" href="theme.css?v=3">
+    <link rel="stylesheet" href="theme.css?v=4">
+    <script>
+        // arriving from the shop's logo wipe: start covered, then sweep away once the page is ready
+        try { if (sessionStorage.getItem('ds-wipe') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { sessionStorage.removeItem('ds-wipe'); document.documentElement.classList.add('wipe-in'); } } catch (e) {}
+    </script>
 </head>
 
 <body>
@@ -1626,7 +1630,26 @@
             document.documentElement.classList.add('anim');
         })();
     </script>
-    <script src="app.js?v=4"></script>
+    <script src="app.js?v=5"></script>
+    <script>
+        (function () {
+            var root = document.documentElement, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (root.classList.contains('wipe-in')) {
+                var go = function () { requestAnimationFrame(function () { root.classList.add('wipe-out'); setTimeout(function () { root.classList.remove('wipe-in', 'wipe-out'); }, 700); }); };
+                if (document.readyState === 'complete') setTimeout(go, 150); else addEventListener('load', function () { setTimeout(go, 150); }); setTimeout(go, 1800);
+            }
+            if (reduce) return;
+            // leaving for the shop: the DS mark sweeps across first
+            var wipe = document.createElement('div'); wipe.className = 'wipe'; wipe.innerHTML = '<img src="assets/logo-mark.webp" alt="">'; document.body.appendChild(wipe);
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest && e.target.closest('a[href*="/DawnSogniWeb"]');
+                if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !wipe.animate) return;
+                e.preventDefault(); wipe.classList.add('on');
+                wipe.animate([{ clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 480, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' }).finished.then(function () { location.href = a.href; });
+            });
+            addEventListener('pageshow', function (e) { if (e.persisted) { wipe.getAnimations().forEach(function (x) { x.cancel(); }); wipe.classList.remove('on'); root.classList.remove('wipe-in', 'wipe-out'); } });
+        })();
+    </script>
 </body>
 
 </html>

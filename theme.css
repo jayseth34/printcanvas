@@ -185,3 +185,13 @@ body::before {
 .side-btn:active { transform: scale(.96); }
 /* the split words carry the silver gradient themselves (a clipped background doesn't reach inline-blocks) */
 #studioTitle .w i { background: var(--ds-silver); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* logo wipe between the shop and the studio */
+html.wipe-in::before, html.wipe-in::after { content: ""; position: fixed; inset: 0; z-index: 2147483002; clip-path: inset(0 0 0 0); transition: clip-path .55s cubic-bezier(.7,0,.2,1); pointer-events: none; }
+html.wipe-in::before { background: #000; }
+html.wipe-in::after { background: url(assets/logo-mark.webp) center / min(40vw, 220px) auto no-repeat; animation: ds-turn 1.6s linear infinite; }
+html.wipe-out::before, html.wipe-out::after { clip-path: inset(0 100% 0 0); }
+.wipe { position: fixed; inset: 0; z-index: 2147483002; display: none; place-items: center; background: #000; clip-path: inset(0 0 0 100%); }
+.wipe.on { display: grid; }
+.wipe img { width: min(40vw, 220px); height: auto; animation: ds-turn 1.6s linear infinite; }
+@keyframes ds-turn { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
