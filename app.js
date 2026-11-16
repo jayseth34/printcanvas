@@ -316,6 +316,7 @@
                 d.image.alt = file.name;
                 d.el.append(d.image);
                 stack.append(d.el);
+                requestAnimationFrame(() => landLayer(d.el));
                 d.el.addEventListener('pointerdown', e => {
                     if (pickMode && d === active) {
                         sampleAt(e, d);
@@ -489,6 +490,7 @@
         d.textNode.className = 'artwork-text';
         d.el.append(d.textNode);
         stack.append(d.el);
+        requestAnimationFrame(() => landLayer(d.el));
         d.el.addEventListener('pointerdown', e => {
             if (pickMode) return;
             selectDesign(d);
@@ -746,7 +748,21 @@
         $$('.side-btn').forEach(b => { const on = b.dataset.side === s; b.classList.toggle('active', on); b.setAttribute('aria-selected', on); });
         garment(); renderList(); syncControls();
     }
-    $$('.side-btn').forEach(b => b.addEventListener('click', () => setSide(b.dataset.side)));
+    // switching side turns the tee over, like the DS mark in the shop (zoom is kept: the turn is added on top)
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let turning = false;
+    function turnTo(s) {
+        if (s === side || turning) return;
+        if (reduceMotion || !mockup.animate) return setSide(s);
+        turning = true;
+        const o = { composite: 'add' };
+        mockup.animate([{ transform: 'perspective(1100px) rotateY(0deg)' }, { transform: 'perspective(1100px) rotateY(90deg)' }], { duration: 180, easing: 'ease-in', ...o }).finished
+            .then(() => { setSide(s); return mockup.animate([{ transform: 'perspective(1100px) rotateY(-90deg)' }, { transform: 'perspective(1100px) rotateY(0deg)' }], { duration: 320, easing: 'cubic-bezier(.2,.7,.2,1)', ...o }).finished; })
+            .catch(() => setSide(s)).finally(() => { turning = false; });
+    }
+    $$('.side-btn').forEach(b => b.addEventListener('click', () => turnTo(b.dataset.side)));
+    // a new layer settles onto the tee
+    const landLayer = el => { if (!reduceMotion && el && el.animate) el.animate([{ opacity: 0, scale: '1.18', filter: 'blur(6px)' }, { opacity: 1, scale: '1', filter: 'blur(0)' }], { duration: 420, easing: 'cubic-bezier(.2,.7,.2,1)' }); };
     // run fn with another side laid out on the mockup (no visible flicker: it all happens before the next paint)
     function withSide(s, fn) {
         if (s === side) return fn();

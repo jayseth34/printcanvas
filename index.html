@@ -1438,7 +1438,7 @@
             display: none
         }
     </style>
-    <link rel="stylesheet" href="theme.css?v=2">
+    <link rel="stylesheet" href="theme.css?v=3">
 </head>
 
 <body>
@@ -1456,7 +1456,7 @@
         <div class="page-head">
             <div>
                 <div class="eyebrow">YOUR CREATIVE WORKSPACE</div>
-                <h1>Design your next favorite.</h1>
+                <h1 id="studioTitle">Design your next favorite.</h1>
                 <p>Make it yours. See it come to life.</p>
             </div>
             <div class="step">STUDIO &nbsp; / &nbsp; <b>01</b></div>
@@ -1617,7 +1617,16 @@
     </dialog>
     <div class="toast" id="toast"></div>
     <script src="fonts.js?v=1"></script>
-    <script src="app.js?v=3"></script>
+    <script>
+        // opening moment, once: the heading rises word by word, then the tee settles in
+        (function () {
+            if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            var h = document.getElementById('studioTitle'), esc = function (w) { return w.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+            h.innerHTML = h.textContent.trim().split(/\s+/).map(function (w, i) { return '<span class="w" style="--i:' + i + '"><i>' + esc(w) + '</i></span>'; }).join(' ');
+            document.documentElement.classList.add('anim');
+        })();
+    </script>
+    <script src="app.js?v=4"></script>
 </body>
 
 </html>
