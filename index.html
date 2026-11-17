@@ -1631,6 +1631,20 @@
         })();
     </script>
     <script src="app.js?v=5"></script>
+    <!-- Google Analytics: uses the code set in the shop's admin (Settings) -->
+    <script src="../DawnSogniWeb/products.js" defer></script>
+    <script>
+        addEventListener('DOMContentLoaded', function () {
+            var id = window.DS && window.DS.analytics;
+            if (!/^G-[A-Z0-9]{4,}$/.test(id || '')) return;
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { dataLayer.push(arguments); };
+            var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + id; document.head.appendChild(g);
+            gtag('js', new Date()); gtag('config', id);
+            var send = document.getElementById('sendWa');
+            if (send) send.addEventListener('click', function () { gtag('event', 'studio_order'); });
+        });
+    </script>
     <script>
         (function () {
             var root = document.documentElement, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
